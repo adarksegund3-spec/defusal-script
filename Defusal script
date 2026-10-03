@@ -1,1084 +1,1289 @@
-local _0xB272 = game:GetService(string.char(80,108,97,121,101,114,115))
-local _0x3C6B = game:GetService(string.char(82,117,110,83,101,114,118,105,99,101))
-local _0x0F0C = game:GetService(string.char(85,115,101,114,73,110,112,117,116,83,101,114,118,105,99,101))
-local _0x9ED1 = game:GetService(string.char(67,111,114,101,71,117,105))
-local _0xD62C = game:GetService(string.char(84,119,101,101,110,83,101,114,118,105,99,101))
-local _0x994B = game:GetService(string.char(76,105,103,104,116,105,110,103))
-local _0xA992 = game:GetService(string.char(86,105,114,116,117,97,108,85,115,101,114))
-local _0xC29E = _0xB272.LocalPlayer
-local _0x389E = workspace.CurrentCamera
-workspace:GetPropertyChangedSignal(string.char(67,117,114,114,101,110,116,67,97,109,101,114,97)):Connect(function()
-_0x389E = workspace.CurrentCamera
+--[[
+═══════════════════════════════════════════════════════════════
+   AKZ MENU [FPS] Defusal — v1
+   
+   Aimbot sempre ativo • Team check real via atributo
+   ESP com cor de time • Speed • JumpPower • FullBright
+   
+   Dev: Akira007p
+═══════════════════════════════════════════════════════════════
+--]]
+
+local Players           = game:GetService("Players")
+local RunService        = game:GetService("RunService")
+local UserInputService  = game:GetService("UserInputService")
+local CoreGui           = game:GetService("CoreGui")
+local TweenService      = game:GetService("TweenService")
+local Lighting          = game:GetService("Lighting")
+local VirtualUser       = game:GetService("VirtualUser")
+
+local LocalPlayer = Players.LocalPlayer
+local Camera      = workspace.CurrentCamera
+workspace:GetPropertyChangedSignal("CurrentCamera"):Connect(function()
+    Camera = workspace.CurrentCamera
 end)
-local _0x26E3, _0xB3F5 = nil, false
+
+local Drawing, hasDrawing = nil, false
 pcall(function()
-_0x26E3 = getfenv().Drawing
-_0xB3F5 = _0x26E3 ~= nil
-end)local _0x0E32 = {ESPEnabled = false,
-Highlight = false,
-HighlightFill = false,
-HighlightOutline = true,
-Box = false,
-Skeleton = false,
-ShowName = false,
-ShowTracer = false,
-ESPTeamCheck = true,AimbotEnabled = false,
-AimbotShowFOV = true,
-AimbotFOV = 120,
-AimbotFOVAlpha = 0.6,
-AimbotPart =string.char(72,101,97,100),
-AimbotTeamCheck = true,
-AimbotWallCheck = true,
-AimbotSmooth = 0.15,SpeedEnabled = false,
-SpeedValue = 30,
-JumpEnabled = false,
-JumpValue = 60,FullBright = false,
-AntiAFK = false,
-}local _0xD286 = 16
-local _0x4A87 = 50local _0xCA48 =string.char(114,98,120,97,115,115,101,116,105,100,58,47,47,56,49,57,49,52,52,48,51,54,52,48,53,49,57)local _0x64EB = {
-Accent = Color3.fromRGB(240, 240, 245),
-AccentDim = Color3.fromRGB(180, 180, 190),
-}
-local _0x260B = Color3.fromRGB(12, 12, 14)
-local _0x857A = Color3.fromRGB(18, 18, 22)
-local _0x7E74 = Color3.fromRGB(8, 8, 10)
-local _0xC4EE = Color3.fromRGB(22, 22, 26)
-local _0x1B4F = Color3.fromRGB(16, 16, 20)
-local _0x56A9 = Color3.fromRGB(240, 240, 245)
-local _0x328A = Color3.fromRGB(140, 140, 150)
-local _0xD0D8 = Color3.fromRGB(40, 40, 48)
-local _0xA54C = Color3.fromRGB(55, 55, 65)
-local _0x08EA = Color3.fromRGB(180, 180, 190)
-local _0x7568 = Color3.fromRGB(15, 15, 18)
-local _0x47EC = Color3.fromRGB(255, 190, 60)
-local _0x4BD0 = Color3.fromRGB(120, 220, 140)
-local _0x43E1 = Color3.fromRGB(230, 90, 90)
-local _0xFB35 = {
-[string.char(69,109,32,112,195,169)] = UDim2.new(0, 480, 0, 440),
-[string.char(68,101,105,116,97,100,111)] = UDim2.new(0, 680, 0, 360),
-}
-local _0x148F =string.char(69,109,32,112,195,169)local function _0xCD42(player)
-if not player then return nil end
-local _0xAF5A = player.Character
-if not _0xAF5A then return nil end
-local _0x007A, _0xA009 = pcall(function() return _0xAF5A:GetAttribute(string.char(84,101,97,109,67,111,108,111,114)) end)
-if _0x007A and _0xA009 then return tostring(_0xA009) end
-return nil
-end
-local function _0x6DCD(_0xAF38)
-if not _0xAF38 then return nil end
-local _0x7A6A, _0xFEB1, _0x6F1C = _0xAF38:match(string.char(40,91,37,100,37,46,93,43,41,44,37,115,42,40,91,37,100,37,46,93,43,41,44,37,115,42,40,91,37,100,37,46,93,43,41))
-if _0x7A6A and _0xFEB1 and _0x6F1C then
-return Color3.new(tonumber(_0x7A6A) or 1, tonumber(_0xFEB1) or 1, tonumber(_0x6F1C) or 1)
-end
-return nil
-end
-local function _0x0C82(player)
-if not player or player == _0xC29E then return false end
-local _0xA857 = _0xCD42(_0xC29E)
-local _0x63EB = _0xCD42(player)
-if not _0xA857 or not _0x63EB then return false end
-return _0xA857 == _0x63EB
-end
-local function _0x4D23(player)
-if player == _0xC29E then return Color3.fromRGB(120, 220, 140) end
-if _0x0C82(player) then return Color3.fromRGB(80, 170, 255) end
-local _0xAF38 = _0xCD42(player)
-local _0xF64B = _0x6DCD(_0xAF38)
-if _0xF64B then return _0xF64B end
-return Color3.fromRGB(220, 40, 40)
-endlocal _0x2B30 = Instance.new(string.char(83,99,114,101,101,110,71,117,105))
-_0x2B30.Name =string.char(65,75,90,95,68,101,102,117,115,97,108,95,77,101,110,117)_0x2B30.ResetOnSpawn = false
-_0x2B30.IgnoreGuiInset = true
-_0x2B30.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-pcall(function() _0x2B30.Parent = _0x9ED1 end)
-if not _0x2B30.Parent then _0x2B30.Parent = _0xC29E:WaitForChild(string.char(80,108,97,121,101,114,71,117,105)) endlocal _0x81CC = Instance.new(string.char(83,99,114,101,101,110,71,117,105))
-_0x81CC.Name =string.char(65,75,90,95,84,111,97,115,116,95,68,101,102,117,115,97,108)_0x81CC.ResetOnSpawn = false
-_0x81CC.IgnoreGuiInset = true
-pcall(function() _0x81CC.Parent = _0x9ED1 end)
-if not _0x81CC.Parent then _0x81CC.Parent = _0xC29E:WaitForChild(string.char(80,108,97,121,101,114,71,117,105)) end
-local _0x66B7 = Instance.new(string.char(70,114,97,109,101))
-_0x66B7.AnchorPoint = Vector2.new(1, 0)
-_0x66B7.Position = UDim2.new(1, -12, 0, 70)
-_0x66B7.Size = UDim2.new(0, 300, 0, 500)
-_0x66B7.BackgroundTransparency = 1
-_0x66B7.Parent = _0x81CC
-local _0x99C6 = Instance.new(string.char(85,73,76,105,115,116,76,97,121,111,117,116), _0x66B7)
-_0x99C6.Padding = UDim.new(0, 8)
-_0x99C6.SortOrder = Enum.SortOrder.LayoutOrder
-_0x99C6.VerticalAlignment = Enum.VerticalAlignment.Top
-_0x99C6.HorizontalAlignment = Enum.HorizontalAlignment.Right
-local function _0x333D(titulo, subtitulo, _0xF64B)
-_0xF64B = _0xF64B or _0x47EC
-local _0x4288 = Instance.new(string.char(70,114,97,109,101))
-_0x4288.Size = UDim2.new(1, 0, 0, 60)
-_0x4288.Position = UDim2.new(1, 320, 0, 0)
-_0x4288.BackgroundColor3 = Color3.fromRGB(18, 18, 22)
-_0x4288.BorderSizePixel = 0
-_0x4288.Parent = _0x66B7
-Instance.new(string.char(85,73,67,111,114,110,101,114), _0x4288).CornerRadius = UDim.new(0, 8)
-local _0x77FE = Instance.new(string.char(85,73,83,116,114,111,107,101), _0x4288)
-_0x77FE.Color = _0xF64B
-_0x77FE.Thickness = 1.5
-local _0x2529 = Instance.new(string.char(70,114,97,109,101), _0x4288)
-_0x2529.Size = UDim2.new(0, 3, 1, -12)
-_0x2529.Position = UDim2.new(0, 6, 0, 6)
-_0x2529.BackgroundColor3 = _0xF64B
-_0x2529.BorderSizePixel = 0
-Instance.new(string.char(85,73,67,111,114,110,101,114), _0x2529).CornerRadius = UDim.new(1, 0)
-local _0x394E = Instance.new(string.char(84,101,120,116,76,97,98,101,108), _0x4288)
-_0x394E.Position = UDim2.new(0, 16, 0, 10)
-_0x394E.Size = UDim2.new(1, -24, 0, 18)
-_0x394E.BackgroundTransparency = 1
-_0x394E.Text = titulo
-_0x394E.Font = Enum.Font.GothamBold
-_0x394E.TextSize = 13
-_0x394E.TextColor3 = _0xF64B
-_0x394E.TextXAlignment = Enum.TextXAlignment.Left
-local _0xAF38 = Instance.new(string.char(84,101,120,116,76,97,98,101,108), _0x4288)
-_0xAF38.Position = UDim2.new(0, 16, 0, 30)
-_0xAF38.Size = UDim2.new(1, -24, 0, 22)
-_0xAF38.BackgroundTransparency = 1
-_0xAF38.Text = subtitulo
-_0xAF38.Font = Enum.Font.GothamMedium
-_0xAF38.TextSize = 11
-_0xAF38.TextColor3 = _0x328A
-_0xAF38.TextXAlignment = Enum.TextXAlignment.Left
-_0xAF38.TextWrapped = true
-_0xD62C:Create(_0x4288, TweenInfo.new(0.35, Enum.EasingStyle.Back, Enum.EasingDirection.Out),
-{Position = UDim2.new(0, 0, 0, 0)}):Play()
-task.delay(4.5, function()
-if not _0x4288.Parent then return end
-local _0x270C = _0xD62C:Create(_0x4288, TweenInfo.new(0.3, Enum.EasingStyle.Quart, Enum.EasingDirection.In),
-{Position = UDim2.new(1, 320, 0, 0)})
-_0x270C:Play()
-_0x270C.Completed:Connect(function() _0x4288:Destroy() end)
+    Drawing = getfenv().Drawing
+    hasDrawing = Drawing ~= nil
 end)
-endlocal _0x885D = Instance.new(string.char(70,114,97,109,101))
-_0x885D.AnchorPoint = Vector2.new(0.5, 0.5)
-_0x885D.Size = UDim2.fromOffset(_0x0E32.AimbotFOV * 2, _0x0E32.AimbotFOV * 2)
-_0x885D.BackgroundTransparency = 1
-_0x885D.BorderSizePixel = 0
-_0x885D.Visible = false
-_0x885D.ZIndex = 0
-_0x885D.Parent = _0x2B30
-Instance.new(string.char(85,73,67,111,114,110,101,114), _0x885D).CornerRadius = UDim.new(1, 0)
-local _0x6929 = Instance.new(string.char(85,73,83,116,114,111,107,101), _0x885D)
-_0x6929.Color = Color3.fromRGB(255, 255, 255)
-_0x6929.Thickness = 1.5
-_0x6929.Transparency = 1 - _0x0E32.AimbotFOVAlpha
-local _0x32FE = nil
-if _0xB3F5 then
-pcall(function()
-_0x32FE = _0x26E3.new(string.char(67,105,114,99,108,101))
-_0x32FE.Visible = false
-_0x32FE.Thickness = 1.5
-_0x32FE.Color = Color3.fromRGB(255,255,255)
-_0x32FE.Filled = false
-_0x32FE.NumSides = 60
-_0x32FE.Radius = _0x0E32.AimbotFOV
-_0x32FE.Transparency = 1 - _0x0E32.AimbotFOVAlpha
-end)
+
+-- ═══════════════════════════════════════════════════════════════
+-- CONFIG
+-- ═══════════════════════════════════════════════════════════════
+local Config = {
+    -- ESP
+    ESPEnabled = false,
+    Highlight = false,
+    HighlightFill = false,
+    HighlightOutline = true,
+    Box = false,
+    Skeleton = false,
+    ShowName = false,
+    ShowTracer = false,
+    ESPTeamCheck = true,
+
+    -- Aimbot
+    AimbotEnabled = false,
+    AimbotShowFOV = true,
+    AimbotFOV = 120,
+    AimbotFOVAlpha = 0.6,
+    AimbotPart = "Head",
+    AimbotTeamCheck = true,
+    AimbotWallCheck = true,
+    AimbotSmooth = 0.15,
+
+    -- Movimento
+    SpeedEnabled = false,
+    SpeedValue = 30,
+    JumpEnabled = false,
+    JumpValue = 60,
+
+    -- Misc
+    FullBright = false,
+    AntiAFK = false,
+}
+
+-- Valores padrão do Roblox (pra restaurar ao desligar)
+local DEFAULT_WALKSPEED = 16
+local DEFAULT_JUMPPOWER = 50
+
+-- ═══════════════════════════════════════════════════════════════
+-- IMAGEM DE FUNDO
+-- ═══════════════════════════════════════════════════════════════
+local IMG_FUNDO = "rbxassetid://81914403640519"
+
+-- ═══════════════════════════════════════════════════════════════
+-- TEMA
+-- ═══════════════════════════════════════════════════════════════
+local Theme = {
+    Accent    = Color3.fromRGB(240, 240, 245),
+    AccentDim = Color3.fromRGB(180, 180, 190),
+}
+local BG          = Color3.fromRGB(12, 12, 14)
+local BG_HEADER   = Color3.fromRGB(18, 18, 22)
+local BG_TAB      = Color3.fromRGB(8, 8, 10)
+local BG_ROW      = Color3.fromRGB(22, 22, 26)
+local BG_BLOCK    = Color3.fromRGB(16, 16, 20)
+local TEXT        = Color3.fromRGB(240, 240, 245)
+local TEXT_DIM    = Color3.fromRGB(140, 140, 150)
+local STROKE_CLR  = Color3.fromRGB(40, 40, 48)
+local OFF_CLR     = Color3.fromRGB(55, 55, 65)
+local KNOB_OFF    = Color3.fromRGB(180, 180, 190)
+local KNOB_ON     = Color3.fromRGB(15, 15, 18)
+local WARN_CLR    = Color3.fromRGB(255, 190, 60)
+local SUCCESS_CLR = Color3.fromRGB(120, 220, 140)
+local DANGER_CLR  = Color3.fromRGB(230, 90, 90)
+
+local LAYOUTS = {
+    ["Em pé"]   = UDim2.new(0, 480, 0, 440),
+    ["Deitado"] = UDim2.new(0, 680, 0, 360),
+}
+local CurrentLayout = "Em pé"
+
+-- ═══════════════════════════════════════════════════════════════
+-- TEAM CHECK — lê Character:GetAttribute("TeamColor")
+-- ═══════════════════════════════════════════════════════════════
+local function getTeamString(player)
+    if not player then return nil end
+    local char = player.Character
+    if not char then return nil end
+    local ok, val = pcall(function() return char:GetAttribute("TeamColor") end)
+    if ok and val then return tostring(val) end
+    return nil
 end
-local function _0x1BE9()
-return Vector2.new(_0x389E.ViewportSize.X / 2, _0x389E.ViewportSize.Y / 2)
+
+local function parseRGB(s)
+    if not s then return nil end
+    local r, g, b = s:match("([%d%.]+),%s*([%d%.]+),%s*([%d%.]+)")
+    if r and g and b then
+        return Color3.new(tonumber(r) or 1, tonumber(g) or 1, tonumber(b) or 1)
+    end
+    return nil
 end
-local function _0x26E7()
-if _0x32FE then
-_0x32FE.Radius = _0x0E32.AimbotFOV
-_0x32FE.Transparency = 1 - _0x0E32.AimbotFOVAlpha
+
+local function isAlly(player)
+    if not player or player == LocalPlayer then return false end
+    local myTeam = getTeamString(LocalPlayer)
+    local theirTeam = getTeamString(player)
+    if not myTeam or not theirTeam then return false end
+    return myTeam == theirTeam
 end
-_0x885D.Size = UDim2.fromOffset(_0x0E32.AimbotFOV * 2, _0x0E32.AimbotFOV * 2)
-_0x6929.Transparency = 1 - _0x0E32.AimbotFOVAlpha
+
+local function getTeamColor(player)
+    if player == LocalPlayer then return Color3.fromRGB(120, 220, 140) end
+    if isAlly(player) then return Color3.fromRGB(80, 170, 255) end
+    local s = getTeamString(player)
+    local cor = parseRGB(s)
+    if cor then return cor end
+    return Color3.fromRGB(220, 40, 40)
 end
-_0x26E7()local _0x3678 = Instance.new(string.char(84,101,120,116,66,117,116,116,111,110))
-_0x3678.AnchorPoint = Vector2.new(0.5, 0.5)
-_0x3678.Size = UDim2.new(0, 58, 0, 58)
-_0x3678.Position = UDim2.new(0, 100, 0, 100)
-_0x3678.BackgroundColor3 = Color3.fromRGB(18, 18, 22)
-_0x3678.BorderSizePixel = 0
-_0x3678.Text =""_0x3678.AutoButtonColor = false
-_0x3678.Active = true
-_0x3678.ZIndex = 5
-_0x3678.Parent = _0x2B30
-Instance.new(string.char(85,73,67,111,114,110,101,114), _0x3678).CornerRadius = UDim.new(1, 0)
-local _0x5F72 = Instance.new(string.char(85,73,83,116,114,111,107,101), _0x3678)
-_0x5F72.Color = _0x64EB.Accent
-_0x5F72.Thickness = 2
-local _0x2518 = Instance.new(string.char(84,101,120,116,76,97,98,101,108), _0x3678)
-_0x2518.Size = UDim2.new(1, 0, 1, 0)
-_0x2518.BackgroundTransparency = 1
-_0x2518.Text =string.char(239,191,189,239,191,189)_0x2518.TextScaled = true
-_0x2518.Font = Enum.Font.GothamBold
+
+-- ═══════════════════════════════════════════════════════════════
+-- UI
+-- ═══════════════════════════════════════════════════════════════
+local screenGui = Instance.new("ScreenGui")
+screenGui.Name = "AKZ_Defusal_Menu"
+screenGui.ResetOnSpawn = false
+screenGui.IgnoreGuiInset = true
+screenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+pcall(function() screenGui.Parent = CoreGui end)
+if not screenGui.Parent then screenGui.Parent = LocalPlayer:WaitForChild("PlayerGui") end
+
+-- Toast
+local toastGui = Instance.new("ScreenGui")
+toastGui.Name = "AKZ_Toast_Defusal"
+toastGui.ResetOnSpawn = false
+toastGui.IgnoreGuiInset = true
+pcall(function() toastGui.Parent = CoreGui end)
+if not toastGui.Parent then toastGui.Parent = LocalPlayer:WaitForChild("PlayerGui") end
+
+local toastHolder = Instance.new("Frame")
+toastHolder.AnchorPoint = Vector2.new(1, 0)
+toastHolder.Position = UDim2.new(1, -12, 0, 70)
+toastHolder.Size = UDim2.new(0, 300, 0, 500)
+toastHolder.BackgroundTransparency = 1
+toastHolder.Parent = toastGui
+
+local toastLayout = Instance.new("UIListLayout", toastHolder)
+toastLayout.Padding = UDim.new(0, 8)
+toastLayout.SortOrder = Enum.SortOrder.LayoutOrder
+toastLayout.VerticalAlignment = Enum.VerticalAlignment.Top
+toastLayout.HorizontalAlignment = Enum.HorizontalAlignment.Right
+
+local function showToast(titulo, subtitulo, cor)
+    cor = cor or WARN_CLR
+    local toast = Instance.new("Frame")
+    toast.Size = UDim2.new(1, 0, 0, 60)
+    toast.Position = UDim2.new(1, 320, 0, 0)
+    toast.BackgroundColor3 = Color3.fromRGB(18, 18, 22)
+    toast.BorderSizePixel = 0
+    toast.Parent = toastHolder
+    Instance.new("UICorner", toast).CornerRadius = UDim.new(0, 8)
+    local st = Instance.new("UIStroke", toast)
+    st.Color = cor
+    st.Thickness = 1.5
+    local bar = Instance.new("Frame", toast)
+    bar.Size = UDim2.new(0, 3, 1, -12)
+    bar.Position = UDim2.new(0, 6, 0, 6)
+    bar.BackgroundColor3 = cor
+    bar.BorderSizePixel = 0
+    Instance.new("UICorner", bar).CornerRadius = UDim.new(1, 0)
+    local t = Instance.new("TextLabel", toast)
+    t.Position = UDim2.new(0, 16, 0, 10)
+    t.Size = UDim2.new(1, -24, 0, 18)
+    t.BackgroundTransparency = 1
+    t.Text = titulo
+    t.Font = Enum.Font.GothamBold
+    t.TextSize = 13
+    t.TextColor3 = cor
+    t.TextXAlignment = Enum.TextXAlignment.Left
+    local s = Instance.new("TextLabel", toast)
+    s.Position = UDim2.new(0, 16, 0, 30)
+    s.Size = UDim2.new(1, -24, 0, 22)
+    s.BackgroundTransparency = 1
+    s.Text = subtitulo
+    s.Font = Enum.Font.GothamMedium
+    s.TextSize = 11
+    s.TextColor3 = TEXT_DIM
+    s.TextXAlignment = Enum.TextXAlignment.Left
+    s.TextWrapped = true
+    TweenService:Create(toast, TweenInfo.new(0.35, Enum.EasingStyle.Back, Enum.EasingDirection.Out),
+        {Position = UDim2.new(0, 0, 0, 0)}):Play()
+    task.delay(4.5, function()
+        if not toast.Parent then return end
+        local out = TweenService:Create(toast, TweenInfo.new(0.3, Enum.EasingStyle.Quart, Enum.EasingDirection.In),
+            {Position = UDim2.new(1, 320, 0, 0)})
+        out:Play()
+        out.Completed:Connect(function() toast:Destroy() end)
+    end)
+end
+
+-- FOV circle
+local fovCircle = Instance.new("Frame")
+fovCircle.AnchorPoint = Vector2.new(0.5, 0.5)
+fovCircle.Size = UDim2.fromOffset(Config.AimbotFOV * 2, Config.AimbotFOV * 2)
+fovCircle.BackgroundTransparency = 1
+fovCircle.BorderSizePixel = 0
+fovCircle.Visible = false
+fovCircle.ZIndex = 0
+fovCircle.Parent = screenGui
+Instance.new("UICorner", fovCircle).CornerRadius = UDim.new(1, 0)
+local fovStroke = Instance.new("UIStroke", fovCircle)
+fovStroke.Color = Color3.fromRGB(255, 255, 255)
+fovStroke.Thickness = 1.5
+fovStroke.Transparency = 1 - Config.AimbotFOVAlpha
+
+local AimFovDrawing = nil
+if hasDrawing then
+    pcall(function()
+        AimFovDrawing = Drawing.new("Circle")
+        AimFovDrawing.Visible = false
+        AimFovDrawing.Thickness = 1.5
+        AimFovDrawing.Color = Color3.fromRGB(255,255,255)
+        AimFovDrawing.Filled = false
+        AimFovDrawing.NumSides = 60
+        AimFovDrawing.Radius = Config.AimbotFOV
+        AimFovDrawing.Transparency = 1 - Config.AimbotFOVAlpha
+    end)
+end
+
+local function getScreenCenter()
+    return Vector2.new(Camera.ViewportSize.X / 2, Camera.ViewportSize.Y / 2)
+end
+
+local function refreshFov()
+    if AimFovDrawing then
+        AimFovDrawing.Radius = Config.AimbotFOV
+        AimFovDrawing.Transparency = 1 - Config.AimbotFOVAlpha
+    end
+    fovCircle.Size = UDim2.fromOffset(Config.AimbotFOV * 2, Config.AimbotFOV * 2)
+    fovStroke.Transparency = 1 - Config.AimbotFOVAlpha
+end
+refreshFov()
+
+-- Logo
+local logo = Instance.new("TextButton")
+logo.AnchorPoint = Vector2.new(0.5, 0.5)
+logo.Size = UDim2.new(0, 58, 0, 58)
+logo.Position = UDim2.new(0, 100, 0, 100)
+logo.BackgroundColor3 = Color3.fromRGB(18, 18, 22)
+logo.BorderSizePixel = 0
+logo.Text = ""
+logo.AutoButtonColor = false
+logo.Active = true
+logo.ZIndex = 5
+logo.Parent = screenGui
+Instance.new("UICorner", logo).CornerRadius = UDim.new(1, 0)
+local logoStroke = Instance.new("UIStroke", logo)
+logoStroke.Color = Theme.Accent
+logoStroke.Thickness = 2
+local knifeIcon = Instance.new("TextLabel", logo)
+knifeIcon.Size = UDim2.new(1, 0, 1, 0)
+knifeIcon.BackgroundTransparency = 1
+knifeIcon.Text = "🎯"
+knifeIcon.TextScaled = true
+knifeIcon.Font = Enum.Font.GothamBold
+
 task.spawn(function()
-while _0x3678.Parent do
-local _0x90AE = _0x64EB.Accent
-local _0x18E2 = _0x90AE:Lerp(Color3.new(0,0,0), 0.45)
-_0xD62C:Create(_0x5F72, TweenInfo.new(1.2, Enum.EasingStyle.Sine), {Color=_0x18E2}):Play()
-task.wait(1.2)
-_0xD62C:Create(_0x5F72, TweenInfo.new(1.2, Enum.EasingStyle.Sine), {Color=_0x90AE}):Play()
-task.wait(1.2)
-end
-end)local _0x8194 = Instance.new(string.char(70,114,97,109,101))
-_0x8194.AnchorPoint = Vector2.new(0.5, 0.5)
-_0x8194.Size = _0xFB35[_0x148F]
-_0x8194.Position = UDim2.new(0.5, 0, 0.5, 0)
-_0x8194.BackgroundColor3 = _0x260B
-_0x8194.BorderSizePixel = 0
-_0x8194.Visible = false
-_0x8194.ClipsDescendants = true
-_0x8194.ZIndex = 10
-_0x8194.Parent = _0x2B30
-local _0x6502 = Instance.new(string.char(85,73,83,99,97,108,101), _0x8194)
-_0x6502.Scale = 1
-Instance.new(string.char(85,73,67,111,114,110,101,114), _0x8194).CornerRadius = UDim.new(0, 12)
-local _0x0345 = Instance.new(string.char(85,73,83,116,114,111,107,101), _0x8194)
-_0x0345.Color = _0xD0D8
-_0x0345.Thickness = 1if _0xCA48 ~=""then
-local _0x6E20 = Instance.new(string.char(73,109,97,103,101,76,97,98,101,108))
-_0x6E20.Name =string.char(66,71,73,109,97,103,101)_0x6E20.Size = UDim2.new(1, 0, 1, 0)
-_0x6E20.BackgroundTransparency = 1
-_0x6E20.Image = _0xCA48
-_0x6E20.ScaleType = Enum.ScaleType.Crop
-_0x6E20.ZIndex = 0
-_0x6E20.Parent = _0x8194
-Instance.new(string.char(85,73,67,111,114,110,101,114), _0x6E20).CornerRadius = UDim.new(0, 12)
-local _0xEAE1 = Instance.new(string.char(70,114,97,109,101))
-_0xEAE1.Name =string.char(66,71,79,118,101,114,108,97,121)_0xEAE1.Size = UDim2.new(1, 0, 1, 0)
-_0xEAE1.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-_0xEAE1.BackgroundTransparency = 0.55
-_0xEAE1.BorderSizePixel = 0
-_0xEAE1.ZIndex = 1
-_0xEAE1.Parent = _0x8194
-Instance.new(string.char(85,73,67,111,114,110,101,114), _0xEAE1).CornerRadius = UDim.new(0, 12)
-_0x8194.BackgroundTransparency = 1
-end
-local _0xAFBF = Instance.new(string.char(70,114,97,109,101))
-_0xAFBF.Size = UDim2.new(1, 0, 0, 40)
-_0xAFBF.BackgroundColor3 = _0x857A
-_0xAFBF.BackgroundTransparency = 0.35
-_0xAFBF.BorderSizePixel = 0
-_0xAFBF.ZIndex = 11
-_0xAFBF.Parent = _0x8194
-local _0xE80F = Instance.new(string.char(84,101,120,116,76,97,98,101,108))
-_0xE80F.Size = UDim2.new(1, -80, 1, 0)
-_0xE80F.Position = UDim2.new(0, 16, 0, 0)
-_0xE80F.BackgroundTransparency = 1
-_0xE80F.Text =string.char(65,75,90,32,77,69,78,85,32,91,70,80,83,93,32,68,101,102,117,115,97,108,32,118,49)_0xE80F.Font = Enum.Font.GothamBold
-_0xE80F.TextSize = 15
-_0xE80F.TextColor3 = _0x64EB.Accent
-_0xE80F.TextXAlignment = Enum.TextXAlignment.Left
-_0xE80F.ZIndex = 11
-_0xE80F.Parent = _0xAFBF
-local _0x6E9D = Instance.new(string.char(84,101,120,116,66,117,116,116,111,110))
-_0x6E9D.Size = UDim2.new(0, 26, 0, 26)
-_0x6E9D.Position = UDim2.new(1, -34, 0.5, -13)
-_0x6E9D.BackgroundColor3 = Color3.fromRGB(70, 70, 78)
-_0x6E9D.Text =string.char(195,151)_0x6E9D.Font = Enum.Font.GothamBold
-_0x6E9D.TextSize = 18
-_0x6E9D.TextColor3 = Color3.fromRGB(240, 240, 245)
-_0x6E9D.BorderSizePixel = 0
-_0x6E9D.AutoButtonColor = false
-_0x6E9D.ZIndex = 11
-_0x6E9D.Parent = _0xAFBF
-Instance.new(string.char(85,73,67,111,114,110,101,114), _0x6E9D).CornerRadius = UDim.new(0, 6)
-local _0x0B46 = Instance.new(string.char(70,114,97,109,101))
-_0x0B46.Size = UDim2.new(1, 0, 0, 34)
-_0x0B46.Position = UDim2.new(0, 0, 0, 40)
-_0x0B46.BackgroundColor3 = _0x7E74
-_0x0B46.BackgroundTransparency = 0.35
-_0x0B46.BorderSizePixel = 0
-_0x0B46.ZIndex = 11
-_0x0B46.Parent = _0x8194
-local _0xADFE = Instance.new(string.char(70,114,97,109,101))
-_0xADFE.Size = UDim2.new(1, 0, 1, -74)
-_0xADFE.Position = UDim2.new(0, 0, 0, 74)
-_0xADFE.BackgroundTransparency = 1
-_0xADFE.ZIndex = 11
-_0xADFE.Parent = _0x8194
-local _0x7279, _0x4140, _0xA1CA = {}, {}, nil
-local function _0xD23C(name)
-if _0xA1CA == name then return end
-if _0xA1CA and _0x7279[_0xA1CA] then
-_0x7279[_0xA1CA].content.Visible = false
-_0xD62C:Create(_0x7279[_0xA1CA].indicator, TweenInfo.new(0.15), {BackgroundTransparency=1}):Play()
-_0xD62C:Create(_0x7279[_0xA1CA].button, TweenInfo.new(0.15), {TextColor3=_0x328A}):Play()
-end
-_0xA1CA = name
-_0x7279[name].content.Visible = true
-_0xD62C:Create(_0x7279[name].indicator, TweenInfo.new(0.15), {BackgroundTransparency=0}):Play()
-_0xD62C:Create(_0x7279[name].button, TweenInfo.new(0.15), {TextColor3=Color3.fromRGB(255,255,255)}):Play()
-end
-local function _0x13CC(name)
-local _0xB7E4 = Instance.new(string.char(84,101,120,116,66,117,116,116,111,110))
-_0xB7E4.Size = UDim2.new(0, 100, 1, 0)
-_0xB7E4.Position = UDim2.new(0, #_0x4140 * 102 + 4, 0, 0)
-_0xB7E4.BackgroundTransparency = 1
-_0xB7E4.Text = name
-_0xB7E4.Font = Enum.Font.GothamBold
-_0xB7E4.TextSize = 13
-_0xB7E4.TextColor3 = _0x328A
-_0xB7E4.AutoButtonColor = false
-_0xB7E4.ZIndex = 12
-_0xB7E4.Parent = _0x0B46
-local _0x5E3B = Instance.new(string.char(70,114,97,109,101))
-_0x5E3B.Size = UDim2.new(1, -20, 0, 2)
-_0x5E3B.Position = UDim2.new(0, 10, 1, -2)
-_0x5E3B.BackgroundColor3 = _0x64EB.Accent
-_0x5E3B.BorderSizePixel = 0
-_0x5E3B.BackgroundTransparency = 1
-_0x5E3B.ZIndex = 12
-_0x5E3B.Parent = _0xB7E4
-local _0x9B77 = Instance.new(string.char(83,99,114,111,108,108,105,110,103,70,114,97,109,101))
-_0x9B77.Size = UDim2.new(1, -16, 1, -12)
-_0x9B77.Position = UDim2.new(0, 8, 0, 6)
-_0x9B77.BackgroundTransparency = 1
-_0x9B77.BorderSizePixel = 0
-_0x9B77.ScrollBarThickness = 3
-_0x9B77.ScrollBarImageColor3 = _0x64EB.Accent
-_0x9B77.CanvasSize = UDim2.new(0, 0, 0, 0)
-_0x9B77.AutomaticCanvasSize = Enum.AutomaticSize.Y
-_0x9B77.Visible = false
-_0x9B77.ZIndex = 12
-_0x9B77.Parent = _0xADFE
-local _0xEEC9 = Instance.new(string.char(85,73,76,105,115,116,76,97,121,111,117,116), _0x9B77)
-_0xEEC9.Padding = UDim.new(0, 6)
-_0xEEC9.SortOrder = Enum.SortOrder.LayoutOrder
-_0xB7E4.MouseButton1Click:Connect(function() _0xD23C(name) end)
-_0x7279[name] = { button = _0xB7E4, _0x9B77 = _0x9B77, _0x5E3B = _0x5E3B }
-_0x4140[#_0x4140 + 1] = name
-return _0x7279[name]
-end
-local function _0xD7FD(parent, order, text)
-local _0x4904 = Instance.new(string.char(84,101,120,116,76,97,98,101,108))
-_0x4904.Size = UDim2.new(1, -6, 0, 22)
-_0x4904.BackgroundTransparency = 1
-_0x4904.Text = text
-_0x4904.Font = Enum.Font.GothamBold
-_0x4904.TextSize = 11
-_0x4904.TextColor3 = _0x64EB.AccentDim
-_0x4904.TextXAlignment = Enum.TextXAlignment.Left
-_0x4904.LayoutOrder = order
-_0x4904.Parent = parent
-return _0x4904
-end
-local function _0xAE3F(parent, order, label, initial, onChange)
-local _0x180F = Instance.new(string.char(70,114,97,109,101))
-_0x180F.Size = UDim2.new(1, 0, 0, 32)
-_0x180F.BackgroundColor3 = _0xC4EE
-_0x180F.BackgroundTransparency = 0.15
-_0x180F.BorderSizePixel = 0
-_0x180F.LayoutOrder = order
-_0x180F.Parent = parent
-Instance.new(string.char(85,73,67,111,114,110,101,114), _0x180F).CornerRadius = UDim.new(0, 8)
-local _0x4904 = Instance.new(string.char(84,101,120,116,76,97,98,101,108))
-_0x4904.Size = UDim2.new(1, -70, 1, 0)
-_0x4904.Position = UDim2.new(0, 12, 0, 0)
-_0x4904.BackgroundTransparency = 1
-_0x4904.Text = label
-_0x4904.Font = Enum.Font.GothamMedium
-_0x4904.TextSize = 13
-_0x4904.TextColor3 = _0x56A9
-_0x4904.TextXAlignment = Enum.TextXAlignment.Left
-_0x4904.Parent = _0x180F
-local _0xF13A = Instance.new(string.char(70,114,97,109,101))
-_0xF13A.Size = UDim2.new(0, 38, 0, 20)
-_0xF13A.Position = UDim2.new(1, -50, 0.5, -10)
-_0xF13A.BackgroundColor3 = initial and _0x64EB.Accent or _0xA54C
-_0xF13A.BorderSizePixel = 0
-_0xF13A.Parent = _0x180F
-Instance.new(string.char(85,73,67,111,114,110,101,114), _0xF13A).CornerRadius = UDim.new(1, 0)
-local _0x01EB = Instance.new(string.char(70,114,97,109,101))
-_0x01EB.Size = UDim2.new(0, 16, 0, 16)
-_0x01EB.Position = initial and UDim2.new(1, -18, 0.5, -8) or UDim2.new(0, 2, 0.5, -8)
-_0x01EB.BackgroundColor3 = initial and _0x7568 or _0x08EA
-_0x01EB.BorderSizePixel = 0
-_0x01EB.Parent = _0xF13A
-Instance.new(string.char(85,73,67,111,114,110,101,114), _0x01EB).CornerRadius = UDim.new(1, 0)
-local _0x0159 = Instance.new(string.char(84,101,120,116,66,117,116,116,111,110))
-_0x0159.Size = UDim2.new(1, 0, 1, 0)
-_0x0159.BackgroundTransparency = 1
-_0x0159.Text =""_0x0159.Parent = _0x180F
-local _0xFED1 = initial
-local function _0xBDA9(v, fire)
-_0xFED1 = v
-_0xD62C:Create(_0xF13A, TweenInfo.new(0.15), {BackgroundColor3 = v and _0x64EB.Accent or _0xA54C}):Play()
-_0xD62C:Create(_0x01EB, TweenInfo.new(0.15), {
-Position = v and UDim2.new(1, -18, 0.5, -8) or UDim2.new(0, 2, 0.5, -8),
-BackgroundColor3 = v and _0x7568 or _0x08EA,
-}):Play()
-if fire and onChange then onChange(v) end
-end
-_0x0159.MouseButton1Click:Connect(function() _0xBDA9(not _0xFED1, true) end)
-return { Set = function(v) _0xBDA9(v, true) end, Get = function() return _0xFED1 end }
-end
-local function _0xD4A1(parent, order, label, options, initial, onChange)
-local _0x180F = Instance.new(string.char(70,114,97,109,101))
-_0x180F.Size = UDim2.new(1, 0, 0, 34)
-_0x180F.BackgroundColor3 = _0xC4EE
-_0x180F.BackgroundTransparency = 0.15
-_0x180F.BorderSizePixel = 0
-_0x180F.LayoutOrder = order
-_0x180F.Parent = parent
-Instance.new(string.char(85,73,67,111,114,110,101,114), _0x180F).CornerRadius = UDim.new(0, 8)
-local _0x4904 = Instance.new(string.char(84,101,120,116,76,97,98,101,108))
-_0x4904.Size = UDim2.new(0, 100, 1, 0)
-_0x4904.Position = UDim2.new(0, 12, 0, 0)
-_0x4904.BackgroundTransparency = 1
-_0x4904.Text = label
-_0x4904.Font = Enum.Font.GothamMedium
-_0x4904.TextSize = 12
-_0x4904.TextColor3 = _0x56A9
-_0x4904.TextXAlignment = Enum.TextXAlignment.Left
-_0x4904.Parent = _0x180F
-local _0xBE7D = Instance.new(string.char(70,114,97,109,101))
-_0xBE7D.Size = UDim2.new(1, -118, 1, -8)
-_0xBE7D.Position = UDim2.new(0, 110, 0, 4)
-_0xBE7D.BackgroundTransparency = 1
-_0xBE7D.Parent = _0x180F
-local _0xEEC9 = Instance.new(string.char(85,73,76,105,115,116,76,97,121,111,117,116), _0xBE7D)
-_0xEEC9.FillDirection = Enum.FillDirection.Horizontal
-_0xEEC9.Padding = UDim.new(0, 4)
-_0xEEC9.VerticalAlignment = Enum.VerticalAlignment.Center
-local _0xDF64 = {}
-local _0xB1D8 = initial
-local function _0x1F78(name)
-for n, _0x6F1C in pairs(_0xDF64) do
-local _0x2515 = n == name
-_0x6F1C.BackgroundColor3 = _0x2515 and _0x64EB.Accent or _0xA54C
-_0x6F1C.TextColor3 = _0x2515 and Color3.fromRGB(15, 15, 18) or _0x328A
-end
-end
-for _, name in ipairs(options) do
-local _0x6F1C = Instance.new(string.char(84,101,120,116,66,117,116,116,111,110))
-_0x6F1C.Size = UDim2.new(0, 0, 1, 0)
-_0x6F1C.AutomaticSize = Enum.AutomaticSize.X
-_0x6F1C.BackgroundColor3 = _0xA54C
-_0x6F1C.Text = name
-_0x6F1C.Font = Enum.Font.GothamBold
-_0x6F1C.TextSize = 10
-_0x6F1C.TextColor3 = _0x328A
-_0x6F1C.AutoButtonColor = false
-_0x6F1C.BorderSizePixel = 0
-_0x6F1C.Parent = _0xBE7D
-Instance.new(string.char(85,73,67,111,114,110,101,114), _0x6F1C).CornerRadius = UDim.new(0, 6)
-local _0x16CC = Instance.new(string.char(85,73,80,97,100,100,105,110,103), _0x6F1C)
-_0x16CC.PaddingLeft = UDim.new(0, 8)
-_0x16CC.PaddingRight = UDim.new(0, 8)
-_0xDF64[name] = _0x6F1C
-_0x6F1C.MouseButton1Click:Connect(function()
-_0xB1D8 = name
-_0x1F78(name)
-if onChange then onChange(name) end
+    while logo.Parent do
+        local c = Theme.Accent
+        local dim = c:Lerp(Color3.new(0,0,0), 0.45)
+        TweenService:Create(logoStroke, TweenInfo.new(1.2, Enum.EasingStyle.Sine), {Color=dim}):Play()
+        task.wait(1.2)
+        TweenService:Create(logoStroke, TweenInfo.new(1.2, Enum.EasingStyle.Sine), {Color=c}):Play()
+        task.wait(1.2)
+    end
 end)
+
+-- Menu Frame
+local menuFrame = Instance.new("Frame")
+menuFrame.AnchorPoint = Vector2.new(0.5, 0.5)
+menuFrame.Size = LAYOUTS[CurrentLayout]
+menuFrame.Position = UDim2.new(0.5, 0, 0.5, 0)
+menuFrame.BackgroundColor3 = BG
+menuFrame.BorderSizePixel = 0
+menuFrame.Visible = false
+menuFrame.ClipsDescendants = true
+menuFrame.ZIndex = 10
+menuFrame.Parent = screenGui
+
+local menuScale = Instance.new("UIScale", menuFrame)
+menuScale.Scale = 1
+
+Instance.new("UICorner", menuFrame).CornerRadius = UDim.new(0, 12)
+local menuStroke = Instance.new("UIStroke", menuFrame)
+menuStroke.Color = STROKE_CLR
+menuStroke.Thickness = 1
+
+-- Fundo com imagem + overlay
+if IMG_FUNDO ~= "" then
+    local bgImage = Instance.new("ImageLabel")
+    bgImage.Name = "BGImage"
+    bgImage.Size = UDim2.new(1, 0, 1, 0)
+    bgImage.BackgroundTransparency = 1
+    bgImage.Image = IMG_FUNDO
+    bgImage.ScaleType = Enum.ScaleType.Crop
+    bgImage.ZIndex = 0
+    bgImage.Parent = menuFrame
+    Instance.new("UICorner", bgImage).CornerRadius = UDim.new(0, 12)
+
+    local bgOverlay = Instance.new("Frame")
+    bgOverlay.Name = "BGOverlay"
+    bgOverlay.Size = UDim2.new(1, 0, 1, 0)
+    bgOverlay.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+    bgOverlay.BackgroundTransparency = 0.55
+    bgOverlay.BorderSizePixel = 0
+    bgOverlay.ZIndex = 1
+    bgOverlay.Parent = menuFrame
+    Instance.new("UICorner", bgOverlay).CornerRadius = UDim.new(0, 12)
+
+    menuFrame.BackgroundTransparency = 1
 end
-_0x1F78(initial)
-return { Set = function(v) _0xB1D8=v; _0x1F78(v); if onChange then onChange(v) end end, Get = function() return _0xB1D8 end }
+
+local header = Instance.new("Frame")
+header.Size = UDim2.new(1, 0, 0, 40)
+header.BackgroundColor3 = BG_HEADER
+header.BackgroundTransparency = 0.35
+header.BorderSizePixel = 0
+header.ZIndex = 11
+header.Parent = menuFrame
+
+local headerTitle = Instance.new("TextLabel")
+headerTitle.Size = UDim2.new(1, -80, 1, 0)
+headerTitle.Position = UDim2.new(0, 16, 0, 0)
+headerTitle.BackgroundTransparency = 1
+headerTitle.Text = "AKZ MENU [FPS] Defusal v1"
+headerTitle.Font = Enum.Font.GothamBold
+headerTitle.TextSize = 15
+headerTitle.TextColor3 = Theme.Accent
+headerTitle.TextXAlignment = Enum.TextXAlignment.Left
+headerTitle.ZIndex = 11
+headerTitle.Parent = header
+
+local closeBtn = Instance.new("TextButton")
+closeBtn.Size = UDim2.new(0, 26, 0, 26)
+closeBtn.Position = UDim2.new(1, -34, 0.5, -13)
+closeBtn.BackgroundColor3 = Color3.fromRGB(70, 70, 78)
+closeBtn.Text = "×"
+closeBtn.Font = Enum.Font.GothamBold
+closeBtn.TextSize = 18
+closeBtn.TextColor3 = Color3.fromRGB(240, 240, 245)
+closeBtn.BorderSizePixel = 0
+closeBtn.AutoButtonColor = false
+closeBtn.ZIndex = 11
+closeBtn.Parent = header
+Instance.new("UICorner", closeBtn).CornerRadius = UDim.new(0, 6)
+
+local tabBar = Instance.new("Frame")
+tabBar.Size = UDim2.new(1, 0, 0, 34)
+tabBar.Position = UDim2.new(0, 0, 0, 40)
+tabBar.BackgroundColor3 = BG_TAB
+tabBar.BackgroundTransparency = 0.35
+tabBar.BorderSizePixel = 0
+tabBar.ZIndex = 11
+tabBar.Parent = menuFrame
+
+local contentArea = Instance.new("Frame")
+contentArea.Size = UDim2.new(1, 0, 1, -74)
+contentArea.Position = UDim2.new(0, 0, 0, 74)
+contentArea.BackgroundTransparency = 1
+contentArea.ZIndex = 11
+contentArea.Parent = menuFrame
+
+local Tabs, tabOrder, ActiveTab = {}, {}, nil
+
+local function selectTab(name)
+    if ActiveTab == name then return end
+    if ActiveTab and Tabs[ActiveTab] then
+        Tabs[ActiveTab].content.Visible = false
+        TweenService:Create(Tabs[ActiveTab].indicator, TweenInfo.new(0.15), {BackgroundTransparency=1}):Play()
+        TweenService:Create(Tabs[ActiveTab].button, TweenInfo.new(0.15), {TextColor3=TEXT_DIM}):Play()
+    end
+    ActiveTab = name
+    Tabs[name].content.Visible = true
+    TweenService:Create(Tabs[name].indicator, TweenInfo.new(0.15), {BackgroundTransparency=0}):Play()
+    TweenService:Create(Tabs[name].button, TweenInfo.new(0.15), {TextColor3=Color3.fromRGB(255,255,255)}):Play()
 end
-local function _0x212C(parent, order, label, minV, maxV, initial, isFloat, onChange)
-local _0x180F = Instance.new(string.char(70,114,97,109,101))
-_0x180F.Size = UDim2.new(1, 0, 0, 42)
-_0x180F.BackgroundColor3 = _0xC4EE
-_0x180F.BackgroundTransparency = 0.15
-_0x180F.BorderSizePixel = 0
-_0x180F.LayoutOrder = order
-_0x180F.Parent = parent
-Instance.new(string.char(85,73,67,111,114,110,101,114), _0x180F).CornerRadius = UDim.new(0, 8)
-local _0x4904 = Instance.new(string.char(84,101,120,116,76,97,98,101,108))
-_0x4904.Size = UDim2.new(1, -70, 0, 16)
-_0x4904.Position = UDim2.new(0, 12, 0, 4)
-_0x4904.BackgroundTransparency = 1
-_0x4904.Text = label
-_0x4904.Font = Enum.Font.GothamMedium
-_0x4904.TextSize = 12
-_0x4904.TextColor3 = _0x56A9
-_0x4904.TextXAlignment = Enum.TextXAlignment.Left
-_0x4904.Parent = _0x180F
-local _0xAD54 = Instance.new(string.char(84,101,120,116,76,97,98,101,108))
-_0xAD54.Size = UDim2.new(0, 60, 0, 16)
-_0xAD54.Position = UDim2.new(1, -72, 0, 4)
-_0xAD54.BackgroundTransparency = 1
-_0xAD54.Text = tostring(initial)
-_0xAD54.Font = Enum.Font.GothamBold
-_0xAD54.TextSize = 12
-_0xAD54.TextColor3 = _0x64EB.Accent
-_0xAD54.TextXAlignment = Enum.TextXAlignment.Right
-_0xAD54.Parent = _0x180F
-local _0x2529 = Instance.new(string.char(70,114,97,109,101))
-_0x2529.Size = UDim2.new(1, -24, 0, 6)
-_0x2529.Position = UDim2.new(0, 12, 0, 28)
-_0x2529.BackgroundColor3 = Color3.fromRGB(40, 40, 48)
-_0x2529.BorderSizePixel = 0
-_0x2529.Parent = _0x180F
-Instance.new(string.char(85,73,67,111,114,110,101,114), _0x2529).CornerRadius = UDim.new(1, 0)
-local _0x2CA6 = Instance.new(string.char(70,114,97,109,101))
-_0x2CA6.Size = UDim2.new((initial - minV) / (maxV - minV), 0, 1, 0)
-_0x2CA6.BackgroundColor3 = _0x64EB.Accent
-_0x2CA6.BorderSizePixel = 0
-_0x2CA6.Parent = _0x2529
-Instance.new(string.char(85,73,67,111,114,110,101,114), _0x2CA6).CornerRadius = UDim.new(1, 0)
-local _0x01EB = Instance.new(string.char(70,114,97,109,101))
-_0x01EB.AnchorPoint = Vector2.new(0.5, 0.5)
-_0x01EB.Size = UDim2.new(0, 12, 0, 12)
-_0x01EB.Position = UDim2.new((initial - minV) / (maxV - minV), 0, 0.5, 0)
-_0x01EB.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-_0x01EB.BorderSizePixel = 0
-_0x01EB.Parent = _0x2529
-Instance.new(string.char(85,73,67,111,114,110,101,114), _0x01EB).CornerRadius = UDim.new(1, 0)
-local _0x0159 = Instance.new(string.char(84,101,120,116,66,117,116,116,111,110))
-_0x0159.Size = UDim2.new(1, 0, 1, 0)
-_0x0159.BackgroundTransparency = 1
-_0x0159.Text =""_0x0159.Parent = _0x180F
-local _0x2D9B = false
-local _0x7FEF = initial
-local function _0x542E(absX)
-local _0xFA67 = math.clamp((absX - _0x2529.AbsolutePosition.X) / _0x2529.AbsoluteSize.X, 0, 1)
-_0x7FEF = minV + _0xFA67 * (maxV - minV)
-local _0xF876
-if isFloat then _0xF876 = math.floor(_0x7FEF * 100) / 100
-else _0xF876 = math.floor(_0x7FEF + 0.5) end
-_0xAD54.Text = tostring(_0xF876)
-_0x2CA6.Size = UDim2.new(_0xFA67, 0, 1, 0)
-_0x01EB.Position = UDim2.new(_0xFA67, 0, 0.5, 0)
-if onChange then onChange(_0x7FEF) end
+
+local function createTab(name)
+    local btn = Instance.new("TextButton")
+    btn.Size = UDim2.new(0, 100, 1, 0)
+    btn.Position = UDim2.new(0, #tabOrder * 102 + 4, 0, 0)
+    btn.BackgroundTransparency = 1
+    btn.Text = name
+    btn.Font = Enum.Font.GothamBold
+    btn.TextSize = 13
+    btn.TextColor3 = TEXT_DIM
+    btn.AutoButtonColor = false
+    btn.ZIndex = 12
+    btn.Parent = tabBar
+
+    local indicator = Instance.new("Frame")
+    indicator.Size = UDim2.new(1, -20, 0, 2)
+    indicator.Position = UDim2.new(0, 10, 1, -2)
+    indicator.BackgroundColor3 = Theme.Accent
+    indicator.BorderSizePixel = 0
+    indicator.BackgroundTransparency = 1
+    indicator.ZIndex = 12
+    indicator.Parent = btn
+
+    local content = Instance.new("ScrollingFrame")
+    content.Size = UDim2.new(1, -16, 1, -12)
+    content.Position = UDim2.new(0, 8, 0, 6)
+    content.BackgroundTransparency = 1
+    content.BorderSizePixel = 0
+    content.ScrollBarThickness = 3
+    content.ScrollBarImageColor3 = Theme.Accent
+    content.CanvasSize = UDim2.new(0, 0, 0, 0)
+    content.AutomaticCanvasSize = Enum.AutomaticSize.Y
+    content.Visible = false
+    content.ZIndex = 12
+    content.Parent = contentArea
+
+    local layout = Instance.new("UIListLayout", content)
+    layout.Padding = UDim.new(0, 6)
+    layout.SortOrder = Enum.SortOrder.LayoutOrder
+
+    btn.MouseButton1Click:Connect(function() selectTab(name) end)
+
+    Tabs[name] = { button = btn, content = content, indicator = indicator }
+    tabOrder[#tabOrder + 1] = name
+    return Tabs[name]
 end
-_0x0159.InputBegan:Connect(function(input)
-if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
-_0x2D9B = true; _0x542E(input.Position.X)
+
+local function createSection(parent, order, text)
+    local lbl = Instance.new("TextLabel")
+    lbl.Size = UDim2.new(1, -6, 0, 22)
+    lbl.BackgroundTransparency = 1
+    lbl.Text = text
+    lbl.Font = Enum.Font.GothamBold
+    lbl.TextSize = 11
+    lbl.TextColor3 = Theme.AccentDim
+    lbl.TextXAlignment = Enum.TextXAlignment.Left
+    lbl.LayoutOrder = order
+    lbl.Parent = parent
+    return lbl
 end
-end)
-_0x0F0C.InputChanged:Connect(function(input)
-if not _0x2D9B then return end
-if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
-_0x542E(input.Position.X)
+
+local function createToggle(parent, order, label, initial, onChange)
+    local row = Instance.new("Frame")
+    row.Size = UDim2.new(1, 0, 0, 32)
+    row.BackgroundColor3 = BG_ROW
+    row.BackgroundTransparency = 0.15
+    row.BorderSizePixel = 0
+    row.LayoutOrder = order
+    row.Parent = parent
+    Instance.new("UICorner", row).CornerRadius = UDim.new(0, 8)
+    local lbl = Instance.new("TextLabel")
+    lbl.Size = UDim2.new(1, -70, 1, 0)
+    lbl.Position = UDim2.new(0, 12, 0, 0)
+    lbl.BackgroundTransparency = 1
+    lbl.Text = label
+    lbl.Font = Enum.Font.GothamMedium
+    lbl.TextSize = 13
+    lbl.TextColor3 = TEXT
+    lbl.TextXAlignment = Enum.TextXAlignment.Left
+    lbl.Parent = row
+    local track = Instance.new("Frame")
+    track.Size = UDim2.new(0, 38, 0, 20)
+    track.Position = UDim2.new(1, -50, 0.5, -10)
+    track.BackgroundColor3 = initial and Theme.Accent or OFF_CLR
+    track.BorderSizePixel = 0
+    track.Parent = row
+    Instance.new("UICorner", track).CornerRadius = UDim.new(1, 0)
+    local knob = Instance.new("Frame")
+    knob.Size = UDim2.new(0, 16, 0, 16)
+    knob.Position = initial and UDim2.new(1, -18, 0.5, -8) or UDim2.new(0, 2, 0.5, -8)
+    knob.BackgroundColor3 = initial and KNOB_ON or KNOB_OFF
+    knob.BorderSizePixel = 0
+    knob.Parent = track
+    Instance.new("UICorner", knob).CornerRadius = UDim.new(1, 0)
+    local click = Instance.new("TextButton")
+    click.Size = UDim2.new(1, 0, 1, 0)
+    click.BackgroundTransparency = 1
+    click.Text = ""
+    click.Parent = row
+    local state = initial
+    local function apply(v, fire)
+        state = v
+        TweenService:Create(track, TweenInfo.new(0.15), {BackgroundColor3 = v and Theme.Accent or OFF_CLR}):Play()
+        TweenService:Create(knob, TweenInfo.new(0.15), {
+            Position = v and UDim2.new(1, -18, 0.5, -8) or UDim2.new(0, 2, 0.5, -8),
+            BackgroundColor3 = v and KNOB_ON or KNOB_OFF,
+        }):Play()
+        if fire and onChange then onChange(v) end
+    end
+    click.MouseButton1Click:Connect(function() apply(not state, true) end)
+    return { Set = function(v) apply(v, true) end, Get = function() return state end }
 end
-end)
-_0x0F0C.InputEnded:Connect(function(input)
-if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
-_0x2D9B = false
+
+local function createOptionRow(parent, order, label, options, initial, onChange)
+    local row = Instance.new("Frame")
+    row.Size = UDim2.new(1, 0, 0, 34)
+    row.BackgroundColor3 = BG_ROW
+    row.BackgroundTransparency = 0.15
+    row.BorderSizePixel = 0
+    row.LayoutOrder = order
+    row.Parent = parent
+    Instance.new("UICorner", row).CornerRadius = UDim.new(0, 8)
+    local lbl = Instance.new("TextLabel")
+    lbl.Size = UDim2.new(0, 100, 1, 0)
+    lbl.Position = UDim2.new(0, 12, 0, 0)
+    lbl.BackgroundTransparency = 1
+    lbl.Text = label
+    lbl.Font = Enum.Font.GothamMedium
+    lbl.TextSize = 12
+    lbl.TextColor3 = TEXT
+    lbl.TextXAlignment = Enum.TextXAlignment.Left
+    lbl.Parent = row
+    local holder = Instance.new("Frame")
+    holder.Size = UDim2.new(1, -118, 1, -8)
+    holder.Position = UDim2.new(0, 110, 0, 4)
+    holder.BackgroundTransparency = 1
+    holder.Parent = row
+    local layout = Instance.new("UIListLayout", holder)
+    layout.FillDirection = Enum.FillDirection.Horizontal
+    layout.Padding = UDim.new(0, 4)
+    layout.VerticalAlignment = Enum.VerticalAlignment.Center
+    local buttons = {}
+    local current = initial
+    local function setActive(name)
+        for n, b in pairs(buttons) do
+            local active = n == name
+            b.BackgroundColor3 = active and Theme.Accent or OFF_CLR
+            b.TextColor3 = active and Color3.fromRGB(15, 15, 18) or TEXT_DIM
+        end
+    end
+    for _, name in ipairs(options) do
+        local b = Instance.new("TextButton")
+        b.Size = UDim2.new(0, 0, 1, 0)
+        b.AutomaticSize = Enum.AutomaticSize.X
+        b.BackgroundColor3 = OFF_CLR
+        b.Text = name
+        b.Font = Enum.Font.GothamBold
+        b.TextSize = 10
+        b.TextColor3 = TEXT_DIM
+        b.AutoButtonColor = false
+        b.BorderSizePixel = 0
+        b.Parent = holder
+        Instance.new("UICorner", b).CornerRadius = UDim.new(0, 6)
+        local pad = Instance.new("UIPadding", b)
+        pad.PaddingLeft = UDim.new(0, 8)
+        pad.PaddingRight = UDim.new(0, 8)
+        buttons[name] = b
+        b.MouseButton1Click:Connect(function()
+            current = name
+            setActive(name)
+            if onChange then onChange(name) end
+        end)
+    end
+    setActive(initial)
+    return { Set = function(v) current=v; setActive(v); if onChange then onChange(v) end end, Get = function() return current end }
 end
-end)
-return { Set = function(v) _0x542E(_0x2529.AbsolutePosition.X + (v - minV) / (maxV - minV) * _0x2529.AbsoluteSize.X) end, Get = function() return _0x7FEF end }
+
+local function createSlider(parent, order, label, minV, maxV, initial, isFloat, onChange)
+    local row = Instance.new("Frame")
+    row.Size = UDim2.new(1, 0, 0, 42)
+    row.BackgroundColor3 = BG_ROW
+    row.BackgroundTransparency = 0.15
+    row.BorderSizePixel = 0
+    row.LayoutOrder = order
+    row.Parent = parent
+    Instance.new("UICorner", row).CornerRadius = UDim.new(0, 8)
+    local lbl = Instance.new("TextLabel")
+    lbl.Size = UDim2.new(1, -70, 0, 16)
+    lbl.Position = UDim2.new(0, 12, 0, 4)
+    lbl.BackgroundTransparency = 1
+    lbl.Text = label
+    lbl.Font = Enum.Font.GothamMedium
+    lbl.TextSize = 12
+    lbl.TextColor3 = TEXT
+    lbl.TextXAlignment = Enum.TextXAlignment.Left
+    lbl.Parent = row
+    local valLbl = Instance.new("TextLabel")
+    valLbl.Size = UDim2.new(0, 60, 0, 16)
+    valLbl.Position = UDim2.new(1, -72, 0, 4)
+    valLbl.BackgroundTransparency = 1
+    valLbl.Text = tostring(initial)
+    valLbl.Font = Enum.Font.GothamBold
+    valLbl.TextSize = 12
+    valLbl.TextColor3 = Theme.Accent
+    valLbl.TextXAlignment = Enum.TextXAlignment.Right
+    valLbl.Parent = row
+    local bar = Instance.new("Frame")
+    bar.Size = UDim2.new(1, -24, 0, 6)
+    bar.Position = UDim2.new(0, 12, 0, 28)
+    bar.BackgroundColor3 = Color3.fromRGB(40, 40, 48)
+    bar.BorderSizePixel = 0
+    bar.Parent = row
+    Instance.new("UICorner", bar).CornerRadius = UDim.new(1, 0)
+    local fill = Instance.new("Frame")
+    fill.Size = UDim2.new((initial - minV) / (maxV - minV), 0, 1, 0)
+    fill.BackgroundColor3 = Theme.Accent
+    fill.BorderSizePixel = 0
+    fill.Parent = bar
+    Instance.new("UICorner", fill).CornerRadius = UDim.new(1, 0)
+    local knob = Instance.new("Frame")
+    knob.AnchorPoint = Vector2.new(0.5, 0.5)
+    knob.Size = UDim2.new(0, 12, 0, 12)
+    knob.Position = UDim2.new((initial - minV) / (maxV - minV), 0, 0.5, 0)
+    knob.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    knob.BorderSizePixel = 0
+    knob.Parent = bar
+    Instance.new("UICorner", knob).CornerRadius = UDim.new(1, 0)
+    local click = Instance.new("TextButton")
+    click.Size = UDim2.new(1, 0, 1, 0)
+    click.BackgroundTransparency = 1
+    click.Text = ""
+    click.Parent = row
+    local dragging = false
+    local value = initial
+    local function setFromAbsX(absX)
+        local rel = math.clamp((absX - bar.AbsolutePosition.X) / bar.AbsoluteSize.X, 0, 1)
+        value = minV + rel * (maxV - minV)
+        local display
+        if isFloat then display = math.floor(value * 100) / 100
+        else display = math.floor(value + 0.5) end
+        valLbl.Text = tostring(display)
+        fill.Size = UDim2.new(rel, 0, 1, 0)
+        knob.Position = UDim2.new(rel, 0, 0.5, 0)
+        if onChange then onChange(value) end
+    end
+    click.InputBegan:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+            dragging = true; setFromAbsX(input.Position.X)
+        end
+    end)
+    UserInputService.InputChanged:Connect(function(input)
+        if not dragging then return end
+        if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
+            setFromAbsX(input.Position.X)
+        end
+    end)
+    UserInputService.InputEnded:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+            dragging = false
+        end
+    end)
+    return { Set = function(v) setFromAbsX(bar.AbsolutePosition.X + (v - minV) / (maxV - minV) * bar.AbsoluteSize.X) end, Get = function() return value end }
 end
-local function _0x7732(parent, order, label, onClick)
-local _0xB7E4 = Instance.new(string.char(84,101,120,116,66,117,116,116,111,110))
-_0xB7E4.Size = UDim2.new(1, 0, 0, 34)
-_0xB7E4.BackgroundColor3 = Color3.fromRGB(34, 34, 42)
-_0xB7E4.BackgroundTransparency = 0.15
-_0xB7E4.BorderSizePixel = 0
-_0xB7E4.Text = label
-_0xB7E4.Font = Enum.Font.GothamBold
-_0xB7E4.TextSize = 12
-_0xB7E4.TextColor3 = _0x56A9
-_0xB7E4.AutoButtonColor = false
-_0xB7E4.LayoutOrder = order
-_0xB7E4.Parent = parent
-Instance.new(string.char(85,73,67,111,114,110,101,114), _0xB7E4).CornerRadius = UDim.new(0, 8)
-local _0x77FE = Instance.new(string.char(85,73,83,116,114,111,107,101), _0xB7E4)
-_0x77FE.Color = _0x64EB.Accent
-_0x77FE.Thickness = 1
-_0x77FE.Transparency = 0.6
-_0xB7E4.MouseButton1Click:Connect(function()
-_0xD62C:Create(_0x77FE, TweenInfo.new(0.1), {Transparency = 0}):Play()
-task.delay(0.15, function()
-_0xD62C:Create(_0x77FE, TweenInfo.new(0.2), {Transparency = 0.6}):Play()
-end)
-if onClick then onClick() end
-end)
-return _0xB7E4
-endlocal _0xF33C =string.char(65,75,90,95,72,76)local _0x3C1D = {
-{string.char(72,101,97,100),string.char(85,112,112,101,114,84,111,114,115,111)}, {string.char(85,112,112,101,114,84,111,114,115,111),string.char(76,111,119,101,114,84,111,114,115,111)},
-{string.char(85,112,112,101,114,84,111,114,115,111),string.char(76,101,102,116,85,112,112,101,114,65,114,109)}, {string.char(76,101,102,116,85,112,112,101,114,65,114,109),string.char(76,101,102,116,76,111,119,101,114,65,114,109)}, {string.char(76,101,102,116,76,111,119,101,114,65,114,109),string.char(76,101,102,116,72,97,110,100)},
-{string.char(85,112,112,101,114,84,111,114,115,111),string.char(82,105,103,104,116,85,112,112,101,114,65,114,109)}, {string.char(82,105,103,104,116,85,112,112,101,114,65,114,109),string.char(82,105,103,104,116,76,111,119,101,114,65,114,109)}, {string.char(82,105,103,104,116,76,111,119,101,114,65,114,109),string.char(82,105,103,104,116,72,97,110,100)},
-{string.char(76,111,119,101,114,84,111,114,115,111),string.char(76,101,102,116,85,112,112,101,114,76,101,103)}, {string.char(76,101,102,116,85,112,112,101,114,76,101,103),string.char(76,101,102,116,76,111,119,101,114,76,101,103)}, {string.char(76,101,102,116,76,111,119,101,114,76,101,103),string.char(76,101,102,116,70,111,111,116)},
-{string.char(76,111,119,101,114,84,111,114,115,111),string.char(82,105,103,104,116,85,112,112,101,114,76,101,103)}, {string.char(82,105,103,104,116,85,112,112,101,114,76,101,103),string.char(82,105,103,104,116,76,111,119,101,114,76,101,103)}, {string.char(82,105,103,104,116,76,111,119,101,114,76,101,103),string.char(82,105,103,104,116,70,111,111,116)},
+
+local function createButton(parent, order, label, onClick)
+    local btn = Instance.new("TextButton")
+    btn.Size = UDim2.new(1, 0, 0, 34)
+    btn.BackgroundColor3 = Color3.fromRGB(34, 34, 42)
+    btn.BackgroundTransparency = 0.15
+    btn.BorderSizePixel = 0
+    btn.Text = label
+    btn.Font = Enum.Font.GothamBold
+    btn.TextSize = 12
+    btn.TextColor3 = TEXT
+    btn.AutoButtonColor = false
+    btn.LayoutOrder = order
+    btn.Parent = parent
+    Instance.new("UICorner", btn).CornerRadius = UDim.new(0, 8)
+    local st = Instance.new("UIStroke", btn)
+    st.Color = Theme.Accent
+    st.Thickness = 1
+    st.Transparency = 0.6
+    btn.MouseButton1Click:Connect(function()
+        TweenService:Create(st, TweenInfo.new(0.1), {Transparency = 0}):Play()
+        task.delay(0.15, function()
+            TweenService:Create(st, TweenInfo.new(0.2), {Transparency = 0.6}):Play()
+        end)
+        if onClick then onClick() end
+    end)
+    return btn
+end
+
+-- ═══════════════════════════════════════════════════════════════
+-- ESP (engine MM2)
+-- ═══════════════════════════════════════════════════════════════
+local HL_TAG = "AKZ_HL"
+local SKELETON_R15 = {
+    {"Head","UpperTorso"}, {"UpperTorso","LowerTorso"},
+    {"UpperTorso","LeftUpperArm"}, {"LeftUpperArm","LeftLowerArm"}, {"LeftLowerArm","LeftHand"},
+    {"UpperTorso","RightUpperArm"}, {"RightUpperArm","RightLowerArm"}, {"RightLowerArm","RightHand"},
+    {"LowerTorso","LeftUpperLeg"}, {"LeftUpperLeg","LeftLowerLeg"}, {"LeftLowerLeg","LeftFoot"},
+    {"LowerTorso","RightUpperLeg"}, {"RightUpperLeg","RightLowerLeg"}, {"RightLowerLeg","RightFoot"},
 }
-local _0xCC6F = {
-{string.char(72,101,97,100),string.char(84,111,114,115,111)}, {string.char(84,111,114,115,111),string.char(76,101,102,116,32,65,114,109)}, {string.char(84,111,114,115,111),string.char(82,105,103,104,116,32,65,114,109)},
-{string.char(84,111,114,115,111),string.char(76,101,102,116,32,76,101,103)}, {string.char(84,111,114,115,111),string.char(82,105,103,104,116,32,76,101,103)},
+local SKELETON_R6 = {
+    {"Head","Torso"}, {"Torso","Left Arm"}, {"Torso","Right Arm"},
+    {"Torso","Left Leg"}, {"Torso","Right Leg"},
 }
-local function _0x31C4(_0xAF5A)
-if _0xAF5A:FindFirstChild(string.char(85,112,112,101,114,84,111,114,115,111)) then return _0x3C1D end
-return _0xCC6F
+local function getSkeletonPairs(char)
+    if char:FindFirstChild("UpperTorso") then return SKELETON_R15 end
+    return SKELETON_R6
 end
-local function _0x626B(_0xEB8A)
-if _0xEB8A == nil then return end
-if type(_0xEB8A) ==string.char(116,97,98,108,101)and not _0xEB8A.Remove then
-for _, v in pairs(_0xEB8A) do _0x626B(v) end
-else
-pcall(function() _0xEB8A:Remove() end)
+
+local function removeDrawing(d)
+    if d == nil then return end
+    if type(d) == "table" and not d.Remove then
+        for _, v in pairs(d) do removeDrawing(v) end
+    else
+        pcall(function() d:Remove() end)
+    end
 end
+
+local espCache = {}
+
+local function clearESPForPlayer(player)
+    local c = espCache[player]
+    if not c then return end
+    if c.highlight then c.highlight:Destroy(); c.highlight = nil end
+    if c.billboard then c.billboard:Destroy(); c.billboard = nil end
+    if c.drawings then
+        for _, d in pairs(c.drawings) do removeDrawing(d) end
+        c.drawings = {}
+    end
 end
-local _0x3ECE = {}
-local function _0x192B(player)
-local _0x90AE = _0x3ECE[player]
-if not _0x90AE then return end
-if _0x90AE.highlight then _0x90AE.highlight:Destroy(); _0x90AE.highlight = nil end
-if _0x90AE.billboard then _0x90AE.billboard:Destroy(); _0x90AE.billboard = nil end
-if _0x90AE.drawings then
-for _, _0xEB8A in pairs(_0x90AE.drawings) do _0x626B(_0xEB8A) end
-_0x90AE.drawings = {}
+
+local function clearAllESP()
+    for p in pairs(espCache) do clearESPForPlayer(p) end
 end
+
+local function get2DBounds(char)
+    local cf, size
+    local ok = pcall(function() cf, size = char:GetBoundingBox() end)
+    if not ok or not cf then return nil end
+    size = size + Vector3.new(0, 0.6, 0)
+    local minX, minY = math.huge, math.huge
+    local maxX, maxY = -math.huge, -math.huge
+    local any = false
+    for ix = -0.5, 0.5, 1 do
+        for iy = -0.5, 0.5, 1 do
+            for iz = -0.5, 0.5, 1 do
+                local wp = cf:PointToWorldSpace(Vector3.new(ix*size.X, iy*size.Y, iz*size.Z))
+                local sp, on = Camera:WorldToViewportPoint(wp)
+                if on then
+                    any = true
+                    minX = math.min(minX, sp.X); minY = math.min(minY, sp.Y)
+                    maxX = math.max(maxX, sp.X); maxY = math.max(maxY, sp.Y)
+                end
+            end
+        end
+    end
+    if not any then return nil end
+    return Vector2.new(minX, minY), Vector2.new(maxX, maxY)
 end
-local function _0x9336()
-for p in pairs(_0x3ECE) do _0x192B(p) end
+
+local function updatePlayerESP(player)
+    if player == LocalPlayer then return end
+
+    if Config.ESPTeamCheck and isAlly(player) then
+        clearESPForPlayer(player)
+        return
+    end
+
+    local char = player.Character
+    if not char then clearESPForPlayer(player); return end
+    local hum = char:FindFirstChildOfClass("Humanoid")
+    if not hum or hum.Health <= 0 then clearESPForPlayer(player); return end
+
+    local color = getTeamColor(player)
+    local cache = espCache[player]
+    if not cache then cache = { drawings = {} }; espCache[player] = cache end
+
+    -- Highlight
+    local querHighlight = Config.Highlight and (Config.HighlightFill or Config.HighlightOutline)
+    if querHighlight then
+        if not cache.highlight or not cache.highlight.Parent then
+            local hl = Instance.new("Highlight")
+            hl.Name = HL_TAG
+            hl.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
+            hl.Adornee = char
+            hl.Parent = char
+            cache.highlight = hl
+        end
+        cache.highlight.FillColor = color
+        cache.highlight.OutlineColor = color
+        cache.highlight.FillTransparency    = Config.HighlightFill    and 0.4 or 1
+        cache.highlight.OutlineTransparency = Config.HighlightOutline and 0   or 1
+    elseif cache.highlight then
+        cache.highlight:Destroy(); cache.highlight = nil
+    end
+
+    -- Nome
+    local head = char:FindFirstChild("Head")
+    if Config.ShowName and head then
+        if not cache.billboard or not cache.billboard.Parent then
+            local bb = Instance.new("BillboardGui")
+            bb.Size = UDim2.new(0, 180, 0, 24)
+            bb.StudsOffset = Vector3.new(0, 2.8, 0)
+            bb.AlwaysOnTop = true
+            bb.ResetOnSpawn = false
+            bb.Adornee = head
+            bb.Parent = head
+            local lbl = Instance.new("TextLabel")
+            lbl.Name = "Lbl"
+            lbl.Size = UDim2.new(1, 0, 1, 0)
+            lbl.BackgroundTransparency = 1
+            lbl.Font = Enum.Font.GothamBold
+            lbl.TextSize = 13
+            lbl.TextStrokeTransparency = 0
+            lbl.TextStrokeColor3 = Color3.new(0,0,0)
+            lbl.Parent = bb
+            cache.billboard = bb
+        end
+        cache.billboard.Lbl.Text = player.DisplayName
+        cache.billboard.Lbl.TextColor3 = color
+    elseif cache.billboard then
+        cache.billboard:Destroy(); cache.billboard = nil
+    end
+
+    -- Drawing: Box / Skeleton / Tracer
+    if hasDrawing then
+        local top, bottom = get2DBounds(char)
+        if Config.Box and top and bottom then
+            if not cache.drawings.box then
+                local sq = Drawing.new("Square")
+                sq.Thickness = 1; sq.Filled = false; sq.Transparency = 1
+                cache.drawings.box = sq
+            end
+            local b = cache.drawings.box
+            b.Position = top
+            b.Size = Vector2.new(bottom.X - top.X, bottom.Y - top.Y)
+            b.Color = color
+            b.Visible = true
+        elseif cache.drawings.box then
+            cache.drawings.box.Visible = false
+        end
+
+        local pairsList = getSkeletonPairs(char)
+        cache.drawings.lines = cache.drawings.lines or {}
+        if Config.Skeleton then
+            for i, p in ipairs(pairsList) do
+                if not cache.drawings.lines[i] then
+                    local l = Drawing.new("Line")
+                    l.Thickness = 1; l.Transparency = 1
+                    cache.drawings.lines[i] = l
+                end
+                local ln = cache.drawings.lines[i]
+                local a = char:FindFirstChild(p[1])
+                local b = char:FindFirstChild(p[2])
+                if a and b then
+                    local sa, oa = Camera:WorldToViewportPoint(a.Position)
+                    local sb, ob = Camera:WorldToViewportPoint(b.Position)
+                    if oa and ob then
+                        ln.From = Vector2.new(sa.X, sa.Y)
+                        ln.To = Vector2.new(sb.X, sb.Y)
+                        ln.Color = color
+                        ln.Visible = true
+                    else ln.Visible = false end
+                else ln.Visible = false end
+            end
+            for i = #pairsList + 1, #cache.drawings.lines do
+                cache.drawings.lines[i].Visible = false
+            end
+        else
+            for _, l in ipairs(cache.drawings.lines) do l.Visible = false end
+        end
+
+        if Config.ShowTracer and top and bottom then
+            if not cache.drawings.tracer then
+                local t = Drawing.new("Line")
+                t.Thickness = 1; t.Transparency = 1
+                cache.drawings.tracer = t
+            end
+            local t = cache.drawings.tracer
+            t.From = Vector2.new(Camera.ViewportSize.X / 2, Camera.ViewportSize.Y)
+            t.To = Vector2.new((top.X + bottom.X) / 2, bottom.Y)
+            t.Color = color
+            t.Visible = true
+        elseif cache.drawings.tracer then
+            cache.drawings.tracer.Visible = false
+        end
+    end
 end
-local function _0x5858(_0xAF5A)
-local _0x0742, _0xB819
-local _0x007A = pcall(function() _0x0742, _0xB819 = _0xAF5A:GetBoundingBox() end)
-if not _0x007A or not _0x0742 then return nil end
-_0xB819 = _0xB819 + Vector3.new(0, 0.6, 0)
-local _0x378F, _0x685A = math.huge, math.huge
-local _0x5AE0, _0xA4AB = -math.huge, -math.huge
-local _0xF7C3 = false
-for ix = -0.5, 0.5, 1 do
-for iy = -0.5, 0.5, 1 do
-for iz = -0.5, 0.5, 1 do
-local _0x4D98 = _0x0742:PointToWorldSpace(Vector3.new(ix*_0xB819.X, iy*_0xB819.Y, iz*_0xB819.Z))
-local _0x04D9, _0x0032 = _0x389E:WorldToViewportPoint(_0x4D98)
-if _0x0032 then
-_0xF7C3 = true
-_0x378F = math.min(_0x378F, _0x04D9.X); _0x685A = math.min(_0x685A, _0x04D9.Y)
-_0x5AE0 = math.max(_0x5AE0, _0x04D9.X); _0xA4AB = math.max(_0xA4AB, _0x04D9.Y)
+
+-- ═══════════════════════════════════════════════════════════════
+-- AIMBOT
+-- ═══════════════════════════════════════════════════════════════
+local function getAimPart(char)
+    if not char then return nil end
+    if Config.AimbotPart == "Head" then
+        return char:FindFirstChild("Head") or char:FindFirstChild("HumanoidRootPart")
+    else
+        return char:FindFirstChild("UpperTorso") or char:FindFirstChild("Torso")
+            or char:FindFirstChild("LowerTorso") or char:FindFirstChild("HumanoidRootPart")
+    end
 end
+
+local function hasWallBetween(fromPos, toPos, alvoChar)
+    local params = RaycastParams.new()
+    params.FilterType = Enum.RaycastFilterType.Exclude
+    local filtros = { LocalPlayer.Character, Camera }
+    if alvoChar then table.insert(filtros, alvoChar) end
+    params.FilterDescendantsInstances = filtros
+    local dir = toPos - fromPos
+    local result = workspace:Raycast(fromPos, dir, params)
+    if result and result.Instance then
+        return true
+    end
+    return false
 end
+
+local function getAimbotTarget()
+    local nearest, nearestDist = nil, math.huge
+    local centro = getScreenCenter()
+    for _, p in ipairs(Players:GetPlayers()) do
+        if p ~= LocalPlayer then
+            if not (Config.AimbotTeamCheck and isAlly(p)) then
+                local char = p.Character
+                if char then
+                    local hum = char:FindFirstChildOfClass("Humanoid")
+                    if hum and hum.Health > 0 then
+                        local part = getAimPart(char)
+                        if part then
+                            local sp, onScreen = Camera:WorldToViewportPoint(part.Position)
+                            if onScreen then
+                                local d = (Vector2.new(sp.X, sp.Y) - centro).Magnitude
+                                if d <= Config.AimbotFOV and d < nearestDist then
+                                    if Config.AimbotWallCheck then
+                                        if not hasWallBetween(Camera.CFrame.Position, part.Position, char) then
+                                            nearest = part
+                                            nearestDist = d
+                                        end
+                                    else
+                                        nearest = part
+                                        nearestDist = d
+                                    end
+                                end
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end
+    return nearest
 end
+
+local function lockOn(targetPart)
+    local camPos = Camera.CFrame.Position
+    local dir = targetPart.Position - camPos
+    if dir.Magnitude < 0.01 then return end
+    local targetCF = CFrame.lookAt(camPos, camPos + dir.Unit)
+    if Config.AimbotSmooth <= 0.01 then
+        Camera.CFrame = targetCF
+    else
+        local alpha = math.clamp(1 - Config.AimbotSmooth, 0.05, 1)
+        Camera.CFrame = Camera.CFrame:Lerp(targetCF, alpha)
+    end
 end
-if not _0xF7C3 then return nil end
-return Vector2.new(_0x378F, _0x685A), Vector2.new(_0x5AE0, _0xA4AB)
+
+-- ═══════════════════════════════════════════════════════════════
+-- HELPERS DE MOVIMENTO
+-- ═══════════════════════════════════════════════════════════════
+local function resetSpeed()
+    local char = LocalPlayer.Character
+    if not char then return end
+    local hum = char:FindFirstChildOfClass("Humanoid")
+    if hum then hum.WalkSpeed = DEFAULT_WALKSPEED end
 end
-local function _0x72C1(player)
-if player == _0xC29E then return end
-if _0x0E32.ESPTeamCheck and _0x0C82(player) then
-_0x192B(player)
-return
+
+local function resetJump()
+    local char = LocalPlayer.Character
+    if not char then return end
+    local hum = char:FindFirstChildOfClass("Humanoid")
+    if hum then
+        hum.UseJumpPower = true
+        hum.JumpPower = DEFAULT_JUMPPOWER
+    end
 end
-local _0xAF5A = player.Character
-if not _0xAF5A then _0x192B(player); return end
-local _0x7C8A = _0xAF5A:FindFirstChildOfClass(string.char(72,117,109,97,110,111,105,100))
-if not _0x7C8A or _0x7C8A.Health <= 0 then _0x192B(player); return end
-local _0xD281 = _0x4D23(player)
-local _0xCE23 = _0x3ECE[player]
-if not _0xCE23 then _0xCE23 = { drawings = {} }; _0x3ECE[player] = _0xCE23 endlocal _0x3F3A = _0x0E32.Highlight and (_0x0E32.HighlightFill or _0x0E32.HighlightOutline)
-if _0x3F3A then
-if not _0xCE23.highlight or not _0xCE23.highlight.Parent then
-local _0x2756 = Instance.new(string.char(72,105,103,104,108,105,103,104,116))
-_0x2756.Name = _0xF33C
-_0x2756.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
-_0x2756.Adornee = _0xAF5A
-_0x2756.Parent = _0xAF5A
-_0xCE23.highlight = _0x2756
-end
-_0xCE23.highlight.FillColor = _0xD281
-_0xCE23.highlight.OutlineColor = _0xD281
-_0xCE23.highlight.FillTransparency = _0x0E32.HighlightFill and 0.4 or 1
-_0xCE23.highlight.OutlineTransparency = _0x0E32.HighlightOutline and 0 or 1
-elseif _0xCE23.highlight then
-_0xCE23.highlight:Destroy(); _0xCE23.highlight = nil
-endlocal _0xCD84 = _0xAF5A:FindFirstChild(string.char(72,101,97,100))
-if _0x0E32.ShowName and _0xCD84 then
-if not _0xCE23.billboard or not _0xCE23.billboard.Parent then
-local _0xAC70 = Instance.new(string.char(66,105,108,108,98,111,97,114,100,71,117,105))
-_0xAC70.Size = UDim2.new(0, 180, 0, 24)
-_0xAC70.StudsOffset = Vector3.new(0, 2.8, 0)
-_0xAC70.AlwaysOnTop = true
-_0xAC70.ResetOnSpawn = false
-_0xAC70.Adornee = _0xCD84
-_0xAC70.Parent = _0xCD84
-local _0x4904 = Instance.new(string.char(84,101,120,116,76,97,98,101,108))
-_0x4904.Name =string.char(76,98,108)_0x4904.Size = UDim2.new(1, 0, 1, 0)
-_0x4904.BackgroundTransparency = 1
-_0x4904.Font = Enum.Font.GothamBold
-_0x4904.TextSize = 13
-_0x4904.TextStrokeTransparency = 0
-_0x4904.TextStrokeColor3 = Color3.new(0,0,0)
-_0x4904.Parent = _0xAC70
-_0xCE23.billboard = _0xAC70
-end
-_0xCE23.billboard.Lbl.Text = player.DisplayName
-_0xCE23.billboard.Lbl.TextColor3 = _0xD281
-elseif _0xCE23.billboard then
-_0xCE23.billboard:Destroy(); _0xCE23.billboard = nil
-endif _0xB3F5 then
-local _0x60D8, _0x4664 = _0x5858(_0xAF5A)
-if _0x0E32.Box and _0x60D8 and _0x4664 then
-if not _0xCE23.drawings.box then
-local _0x7672 = _0x26E3.new(string.char(83,113,117,97,114,101))
-_0x7672.Thickness = 1; _0x7672.Filled = false; _0x7672.Transparency = 1
-_0xCE23.drawings.box = _0x7672
-end
-local _0x6F1C = _0xCE23.drawings.box
-_0x6F1C.Position = _0x60D8
-_0x6F1C.Size = Vector2.new(_0x4664.X - _0x60D8.X, _0x4664.Y - _0x60D8.Y)
-_0x6F1C.Color = _0xD281
-_0x6F1C.Visible = true
-elseif _0xCE23.drawings.box then
-_0xCE23.drawings.box.Visible = false
-end
-local _0xCCFA = _0x31C4(_0xAF5A)
-_0xCE23.drawings.lines = _0xCE23.drawings.lines or {}
-if _0x0E32.Skeleton then
-for i, p in ipairs(_0xCCFA) do
-if not _0xCE23.drawings.lines[i] then
-local _0x78B2 = _0x26E3.new(string.char(76,105,110,101))
-_0x78B2.Thickness = 1; _0x78B2.Transparency = 1
-_0xCE23.drawings.lines[i] = _0x78B2
-end
-local _0xD6A8 = _0xCE23.drawings.lines[i]
-local _0x2132 = _0xAF5A:FindFirstChild(p[1])
-local _0x6F1C = _0xAF5A:FindFirstChild(p[2])
-if _0x2132 and _0x6F1C then
-local _0x12D1, _0xD480 = _0x389E:WorldToViewportPoint(_0x2132.Position)
-local _0xD828, _0x611A = _0x389E:WorldToViewportPoint(_0x6F1C.Position)
-if _0xD480 and _0x611A then
-_0xD6A8.From = Vector2.new(_0x12D1.X, _0x12D1.Y)
-_0xD6A8.To = Vector2.new(_0xD828.X, _0xD828.Y)
-_0xD6A8.Color = _0xD281
-_0xD6A8.Visible = true
-else _0xD6A8.Visible = false end
-else _0xD6A8.Visible = false end
-end
-for i = #_0xCCFA + 1, #_0xCE23.drawings.lines do
-_0xCE23.drawings.lines[i].Visible = false
-end
-else
-for _, _0x78B2 in ipairs(_0xCE23.drawings.lines) do _0x78B2.Visible = false end
-end
-if _0x0E32.ShowTracer and _0x60D8 and _0x4664 then
-if not _0xCE23.drawings.tracer then
-local _0x394E = _0x26E3.new(string.char(76,105,110,101))
-_0x394E.Thickness = 1; _0x394E.Transparency = 1
-_0xCE23.drawings.tracer = _0x394E
-end
-local _0x394E = _0xCE23.drawings.tracer
-_0x394E.From = Vector2.new(_0x389E.ViewportSize.X / 2, _0x389E.ViewportSize.Y)
-_0x394E.To = Vector2.new((_0x60D8.X + _0x4664.X) / 2, _0x4664.Y)
-_0x394E.Color = _0xD281
-_0x394E.Visible = true
-elseif _0xCE23.drawings.tracer then
-_0xCE23.drawings.tracer.Visible = false
-end
-end
-endlocal function _0xD715(_0xAF5A)
-if not _0xAF5A then return nil end
-if _0x0E32.AimbotPart ==string.char(72,101,97,100)then
-return _0xAF5A:FindFirstChild(string.char(72,101,97,100)) or _0xAF5A:FindFirstChild(string.char(72,117,109,97,110,111,105,100,82,111,111,116,80,97,114,116))
-else
-return _0xAF5A:FindFirstChild(string.char(85,112,112,101,114,84,111,114,115,111)) or _0xAF5A:FindFirstChild(string.char(84,111,114,115,111))
-or _0xAF5A:FindFirstChild(string.char(76,111,119,101,114,84,111,114,115,111)) or _0xAF5A:FindFirstChild(string.char(72,117,109,97,110,111,105,100,82,111,111,116,80,97,114,116))
-end
-end
-local function _0xE1EF(fromPos, toPos, alvoChar)
-local _0x1A0C = RaycastParams.new()
-_0x1A0C.FilterType = Enum.RaycastFilterType.Exclude
-local _0xE3F0 = { _0xC29E.Character, _0x389E }
-if alvoChar then table.insert(_0xE3F0, alvoChar) end
-_0x1A0C.FilterDescendantsInstances = _0xE3F0
-local _0xC8E3 = toPos - fromPos
-local _0x7BA0 = workspace:Raycast(fromPos, _0xC8E3, _0x1A0C)
-if _0x7BA0 and _0x7BA0.Instance then
-return true
-end
-return false
-end
-local function _0x790D()
-local _0x303E, _0x7227 = nil, math.huge
-local _0x3AEC = _0x1BE9()
-for _, p in ipairs(_0xB272:GetPlayers()) do
-if p ~= _0xC29E then
-if not (_0x0E32.AimbotTeamCheck and _0x0C82(p)) then
-local _0xAF5A = p.Character
-if _0xAF5A then
-local _0x7C8A = _0xAF5A:FindFirstChildOfClass(string.char(72,117,109,97,110,111,105,100))
-if _0x7C8A and _0x7C8A.Health > 0 then
-local _0xF15E = _0xD715(_0xAF5A)
-if _0xF15E then
-local _0x04D9, _0x3F69 = _0x389E:WorldToViewportPoint(_0xF15E.Position)
-if _0x3F69 then
-local _0xEB8A = (Vector2.new(_0x04D9.X, _0x04D9.Y) - _0x3AEC).Magnitude
-if _0xEB8A <= _0x0E32.AimbotFOV and _0xEB8A < _0x7227 then
-if _0x0E32.AimbotWallCheck then
-if not _0xE1EF(_0x389E.CFrame.Position, _0xF15E.Position, _0xAF5A) then
-_0x303E = _0xF15E
-_0x7227 = _0xEB8A
-end
-else
-_0x303E = _0xF15E
-_0x7227 = _0xEB8A
-end
-end
-end
-end
-end
-end
-end
-end
-end
-return _0x303E
-end
-local function _0x5126(targetPart)
-local _0x7A87 = _0x389E.CFrame.Position
-local _0xC8E3 = targetPart.Position - _0x7A87
-if _0xC8E3.Magnitude < 0.01 then return end
-local _0x80A4 = CFrame.lookAt(_0x7A87, _0x7A87 + _0xC8E3.Unit)
-if _0x0E32.AimbotSmooth <= 0.01 then
-_0x389E.CFrame = _0x80A4
-else
-local _0x131E = math.clamp(1 - _0x0E32.AimbotSmooth, 0.05, 1)
-_0x389E.CFrame = _0x389E.CFrame:Lerp(_0x80A4, _0x131E)
-end
-endlocal function _0x299F()
-local _0xAF5A = _0xC29E.Character
-if not _0xAF5A then return end
-local _0x7C8A = _0xAF5A:FindFirstChildOfClass(string.char(72,117,109,97,110,111,105,100))
-if _0x7C8A then _0x7C8A.WalkSpeed = _0xD286 end
-end
-local function _0x92E7()
-local _0xAF5A = _0xC29E.Character
-if not _0xAF5A then return end
-local _0x7C8A = _0xAF5A:FindFirstChildOfClass(string.char(72,117,109,97,110,111,105,100))
-if _0x7C8A then
-_0x7C8A.UseJumpPower = true
-_0x7C8A.JumpPower = _0x4A87
-end
-endlocal _0xC81B = _0x13CC(string.char(69,83,80))
+
+-- ═══════════════════════════════════════════════════════════════
+-- ABAS
+-- ═══════════════════════════════════════════════════════════════
+local espTab = createTab("ESP")
 do
-local _0x90AE = _0xC81B.content
-_0xD7FD(_0x90AE, 1,string.char(71,69,82,65,76))
-_0xAE3F(_0x90AE, 2,string.char(69,83,80,32,65,116,105,118,97,100,111), _0x0E32.ESPEnabled, function(v)
-_0x0E32.ESPEnabled = v
-if not v then _0x9336() end
-end)
-_0xAE3F(_0x90AE, 3,string.char(83,195,179,32,73,110,105,109,105,103,111,115,32,40,116,101,97,109,32,99,104,101,99,107,41), _0x0E32.ESPTeamCheck, function(v) _0x0E32.ESPTeamCheck = v end)
-_0xD7FD(_0x90AE, 4,string.char(72,73,71,72,76,73,71,72,84))
-_0xAE3F(_0x90AE, 5,string.char(65,116,105,118,97,114,32,72,105,103,104,108,105,103,104,116), _0x0E32.Highlight, function(v) _0x0E32.Highlight = v end)
-_0xAE3F(_0x90AE, 6,string.char(80,114,101,101,110,99,104,105,109,101,110,116,111), _0x0E32.HighlightFill, function(v) _0x0E32.HighlightFill = v end)
-_0xAE3F(_0x90AE, 7,string.char(67,111,110,116,111,114,110,111), _0x0E32.HighlightOutline, function(v) _0x0E32.HighlightOutline = v end)
-_0xD7FD(_0x90AE, 8,string.char(70,79,82,77,65,83))
-_0xAE3F(_0x90AE, 9,string.char(66,111,120), _0x0E32.Box, function(v) _0x0E32.Box = v end)
-_0xAE3F(_0x90AE, 10,string.char(83,107,101,108,101,116,111,110), _0x0E32.Skeleton, function(v) _0x0E32.Skeleton = v end)
-_0xD7FD(_0x90AE, 11,string.char(69,88,84,82,65,83))
-_0xAE3F(_0x90AE, 12,string.char(78,111,109,101), _0x0E32.ShowName, function(v) _0x0E32.ShowName = v end)
-_0xAE3F(_0x90AE, 13,string.char(84,114,97,99,101,114), _0x0E32.ShowTracer, function(v) _0x0E32.ShowTracer = v end)
+    local c = espTab.content
+    createSection(c, 1, "GERAL")
+    createToggle(c, 2, "ESP Ativado", Config.ESPEnabled, function(v)
+        Config.ESPEnabled = v
+        if not v then clearAllESP() end
+    end)
+    createToggle(c, 3, "Só Inimigos (team check)", Config.ESPTeamCheck, function(v) Config.ESPTeamCheck = v end)
+
+    createSection(c, 4, "HIGHLIGHT")
+    createToggle(c, 5, "Ativar Highlight", Config.Highlight, function(v) Config.Highlight = v end)
+    createToggle(c, 6, "Preenchimento", Config.HighlightFill, function(v) Config.HighlightFill = v end)
+    createToggle(c, 7, "Contorno", Config.HighlightOutline, function(v) Config.HighlightOutline = v end)
+
+    createSection(c, 8, "FORMAS")
+    createToggle(c, 9, "Box", Config.Box, function(v) Config.Box = v end)
+    createToggle(c, 10, "Skeleton", Config.Skeleton, function(v) Config.Skeleton = v end)
+
+    createSection(c, 11, "EXTRAS")
+    createToggle(c, 12, "Nome", Config.ShowName, function(v) Config.ShowName = v end)
+    createToggle(c, 13, "Tracer", Config.ShowTracer, function(v) Config.ShowTracer = v end)
 end
-local _0xD233 = _0x13CC(string.char(65,105,109,98,111,116))
+
+local aimTab = createTab("Aimbot")
 do
-local _0x90AE = _0xD233.content
-_0xD7FD(_0x90AE, 1,string.char(65,73,77,66,79,84))
-_0xAE3F(_0x90AE, 2,string.char(65,105,109,98,111,116,32,65,116,105,118,97,100,111), _0x0E32.AimbotEnabled, function(v)
-_0x0E32.AimbotEnabled = v
-_0x333D(string.char(65,73,77,66,79,84), v andstring.char(65,116,105,118,97,100,111)orstring.char(68,101,115,97,116,105,118,97,100,111), v and _0x4BD0 or _0x43E1)
-end)
-_0xAE3F(_0x90AE, 3,string.char(77,111,115,116,114,97,114,32,70,79,86), _0x0E32.AimbotShowFOV, function(v) _0x0E32.AimbotShowFOV = v end)
-_0xAE3F(_0x90AE, 4,string.char(78,195,163,111,32,109,105,114,97,114,32,101,109,32,97,108,105,97,100,111,115), _0x0E32.AimbotTeamCheck, function(v) _0x0E32.AimbotTeamCheck = v end)
-_0xAE3F(_0x90AE, 5,string.char(78,195,163,111,32,97,116,114,97,118,101,115,115,97,114,32,112,97,114,101,100,101), _0x0E32.AimbotWallCheck, function(v) _0x0E32.AimbotWallCheck = v end)
-_0xD7FD(_0x90AE, 6,string.char(65,76,86,79))
-_0xD4A1(_0x90AE, 7,string.char(80,97,114,116,101,32,100,111,32,99,111,114,112,111), {string.char(72,101,97,100),string.char(85,112,112,101,114,84,111,114,115,111)}, _0x0E32.AimbotPart, function(v) _0x0E32.AimbotPart = v end)
-_0xD7FD(_0x90AE, 8,string.char(70,79,86))
-_0x212C(_0x90AE, 9,string.char(84,97,109,97,110,104,111), 40, 500, _0x0E32.AimbotFOV, false, function(v) _0x0E32.AimbotFOV = math.floor(v); _0x26E7() end)
-_0x212C(_0x90AE, 10,string.char(84,114,97,110,115,112,97,114,195,170,110,99,105,97), 0, 1, _0x0E32.AimbotFOVAlpha, true, function(v) _0x0E32.AimbotFOVAlpha = v; _0x26E7() end)
-_0xD7FD(_0x90AE, 11,string.char(83,85,65,86,73,68,65,68,69))
-_0x212C(_0x90AE, 12,string.char(83,109,111,111,116,104,110,101,115,115,32,40,48,32,61,32,115,110,97,112,41), 0, 0.95, _0x0E32.AimbotSmooth, true, function(v) _0x0E32.AimbotSmooth = v end)
+    local c = aimTab.content
+    createSection(c, 1, "AIMBOT")
+    createToggle(c, 2, "Aimbot Ativado", Config.AimbotEnabled, function(v)
+        Config.AimbotEnabled = v
+        showToast("AIMBOT", v and "Ativado" or "Desativado", v and SUCCESS_CLR or DANGER_CLR)
+    end)
+    createToggle(c, 3, "Mostrar FOV", Config.AimbotShowFOV, function(v) Config.AimbotShowFOV = v end)
+    createToggle(c, 4, "Não mirar em aliados", Config.AimbotTeamCheck, function(v) Config.AimbotTeamCheck = v end)
+    createToggle(c, 5, "Não atravessar parede", Config.AimbotWallCheck, function(v) Config.AimbotWallCheck = v end)
+
+    createSection(c, 6, "ALVO")
+    createOptionRow(c, 7, "Parte do corpo", {"Head","UpperTorso"}, Config.AimbotPart, function(v) Config.AimbotPart = v end)
+
+    createSection(c, 8, "FOV")
+    createSlider(c, 9, "Tamanho", 40, 500, Config.AimbotFOV, false, function(v) Config.AimbotFOV = math.floor(v); refreshFov() end)
+    createSlider(c, 10, "Transparência", 0, 1, Config.AimbotFOVAlpha, true, function(v) Config.AimbotFOVAlpha = v; refreshFov() end)
+
+    createSection(c, 11, "SUAVIDADE")
+    createSlider(c, 12, "Smoothness (0 = snap)", 0, 0.95, Config.AimbotSmooth, true, function(v) Config.AimbotSmooth = v end)
 end
-local _0xAC9D = _0x13CC(string.char(77,111,118,105,109,101,110,116,111))
+
+local moveTab = createTab("Movimento")
 do
-local _0x90AE = _0xAC9D.content
-_0xD7FD(_0x90AE, 1,string.char(86,69,76,79,67,73,68,65,68,69))
-_0xAE3F(_0x90AE, 2,string.char(83,112,101,101,100,32,65,116,105,118,97,100,111), _0x0E32.SpeedEnabled, function(v)
-_0x0E32.SpeedEnabled = vif not v then _0x299F() end
-end)
-_0x212C(_0x90AE, 3,string.char(86,101,108,111,99,105,100,97,100,101), 16, 200, _0x0E32.SpeedValue, false, function(v)
-_0x0E32.SpeedValue = math.floor(v)if _0x0E32.SpeedEnabled then
-local _0xAF5A = _0xC29E.Character
-if _0xAF5A then
-local _0x7C8A = _0xAF5A:FindFirstChildOfClass(string.char(72,117,109,97,110,111,105,100))
-if _0x7C8A then _0x7C8A.WalkSpeed = _0x0E32.SpeedValue end
+    local c = moveTab.content
+    createSection(c, 1, "VELOCIDADE")
+    createToggle(c, 2, "Speed Ativado", Config.SpeedEnabled, function(v)
+        Config.SpeedEnabled = v
+        -- Se desativou, reseta o WalkSpeed AO VIVO (sem delay)
+        if not v then resetSpeed() end
+    end)
+    createSlider(c, 3, "Velocidade", 16, 200, Config.SpeedValue, false, function(v)
+        Config.SpeedValue = math.floor(v)
+        -- Se tiver ativo, aplica na hora também
+        if Config.SpeedEnabled then
+            local char = LocalPlayer.Character
+            if char then
+                local hum = char:FindFirstChildOfClass("Humanoid")
+                if hum then hum.WalkSpeed = Config.SpeedValue end
+            end
+        end
+    end)
+
+    createSection(c, 4, "PULO")
+    createToggle(c, 5, "JumpPower Ativado", Config.JumpEnabled, function(v)
+        Config.JumpEnabled = v
+        -- Se desativou, reseta o JumpPower AO VIVO (sem delay)
+        if not v then resetJump() end
+    end)
+    createSlider(c, 6, "JumpPower", 50, 300, Config.JumpValue, false, function(v)
+        Config.JumpValue = math.floor(v)
+        if Config.JumpEnabled then
+            local char = LocalPlayer.Character
+            if char then
+                local hum = char:FindFirstChildOfClass("Humanoid")
+                if hum then
+                    hum.UseJumpPower = true
+                    hum.JumpPower = Config.JumpValue
+                end
+            end
+        end
+    end)
 end
-end
-end)
-_0xD7FD(_0x90AE, 4,string.char(80,85,76,79))
-_0xAE3F(_0x90AE, 5,string.char(74,117,109,112,80,111,119,101,114,32,65,116,105,118,97,100,111), _0x0E32.JumpEnabled, function(v)
-_0x0E32.JumpEnabled = vif not v then _0x92E7() end
-end)
-_0x212C(_0x90AE, 6,string.char(74,117,109,112,80,111,119,101,114), 50, 300, _0x0E32.JumpValue, false, function(v)
-_0x0E32.JumpValue = math.floor(v)
-if _0x0E32.JumpEnabled then
-local _0xAF5A = _0xC29E.Character
-if _0xAF5A then
-local _0x7C8A = _0xAF5A:FindFirstChildOfClass(string.char(72,117,109,97,110,111,105,100))
-if _0x7C8A then
-_0x7C8A.UseJumpPower = true
-_0x7C8A.JumpPower = _0x0E32.JumpValue
-end
-end
-end
-end)
-end
-local _0x3FED = _0x13CC(string.char(77,105,115,99))
+
+local miscTab = createTab("Misc")
 do
-local _0x90AE = _0x3FED.content
-_0xD7FD(_0x90AE, 1,string.char(86,73,83,85,65,76))
-_0xAE3F(_0x90AE, 2,string.char(70,117,108,108,66,114,105,103,104,116), _0x0E32.FullBright, function(v)
-_0x0E32.FullBright = v
-if v then
-_0x994B.Ambient = Color3.fromRGB(255, 255, 255)
-_0x994B.OutdoorAmbient = Color3.fromRGB(255, 255, 255)
-_0x994B.Brightness = 2
-_0x994B.ClockTime = 12
-_0x994B.FogEnd = 100000
-_0x994B.GlobalShadows = false
-else
-_0x994B.Ambient = Color3.fromRGB(70, 70, 70)
-_0x994B.OutdoorAmbient = Color3.fromRGB(128, 128, 128)
-_0x994B.Brightness = 1
-_0x994B.GlobalShadows = true
+    local c = miscTab.content
+    createSection(c, 1, "VISUAL")
+    createToggle(c, 2, "FullBright", Config.FullBright, function(v)
+        Config.FullBright = v
+        if v then
+            Lighting.Ambient = Color3.fromRGB(255, 255, 255)
+            Lighting.OutdoorAmbient = Color3.fromRGB(255, 255, 255)
+            Lighting.Brightness = 2
+            Lighting.ClockTime = 12
+            Lighting.FogEnd = 100000
+            Lighting.GlobalShadows = false
+        else
+            Lighting.Ambient = Color3.fromRGB(70, 70, 70)
+            Lighting.OutdoorAmbient = Color3.fromRGB(128, 128, 128)
+            Lighting.Brightness = 1
+            Lighting.GlobalShadows = true
+        end
+    end)
+
+    createSection(c, 3, "UTILITÁRIOS")
+    createToggle(c, 4, "Anti-AFK", Config.AntiAFK, function(v)
+        Config.AntiAFK = v
+        if v then
+            task.spawn(function()
+                while Config.AntiAFK do
+                    task.wait(30)
+                    if not Config.AntiAFK then break end
+                    pcall(function()
+                        VirtualUser:CaptureController()
+                        VirtualUser:ClickButton2(Vector2.new())
+                    end)
+                end
+            end)
+            showToast("ANTI-AFK", "Ativado", SUCCESS_CLR)
+        end
+    end)
+
+    createSection(c, 5, "INFO")
+    local infoLbl = Instance.new("TextLabel")
+    infoLbl.Size = UDim2.new(1, 0, 0, 60)
+    infoLbl.BackgroundColor3 = BG_ROW
+    infoLbl.BackgroundTransparency = 0.15
+    infoLbl.BorderSizePixel = 0
+    infoLbl.LayoutOrder = 6
+    infoLbl.Text = "AKZ MENU [FPS] Defusal v1\nAimbot sempre ativo\nTeam check via atributo\nDev: Akira007p"
+    infoLbl.Font = Enum.Font.Code
+    infoLbl.TextSize = 11
+    infoLbl.TextColor3 = TEXT_DIM
+    infoLbl.TextXAlignment = Enum.TextXAlignment.Center
+    infoLbl.TextYAlignment = Enum.TextYAlignment.Center
+    infoLbl.TextWrapped = true
+    infoLbl.Parent = c
+    Instance.new("UICorner", infoLbl).CornerRadius = UDim.new(0, 8)
 end
+
+selectTab("ESP")
+
+-- ═══════════════════════════════════════════════════════════════
+-- LOOP PRINCIPAL
+-- ═══════════════════════════════════════════════════════════════
+UserInputService.InputBegan:Connect(function(input, gp)
+    if gp then return end
+    if input.KeyCode == Enum.KeyCode.V then
+        Config.ESPEnabled = not Config.ESPEnabled
+        if not Config.ESPEnabled then clearAllESP() end
+    end
 end)
-_0xD7FD(_0x90AE, 3,string.char(85,84,73,76,73,84,195,129,82,73,79,83))
-_0xAE3F(_0x90AE, 4,string.char(65,110,116,105,45,65,70,75), _0x0E32.AntiAFK, function(v)
-_0x0E32.AntiAFK = v
-if v then
-task.spawn(function()
-while _0x0E32.AntiAFK do
-task.wait(30)
-if not _0x0E32.AntiAFK then break end
-pcall(function()
-_0xA992:CaptureController()
-_0xA992:ClickButton2(Vector2.new())
+
+local wasEnabled = false
+RunService.RenderStepped:Connect(function()
+    -- FOV circle
+    local showFov = Config.AimbotEnabled and Config.AimbotShowFOV
+    local centro = getScreenCenter()
+    if AimFovDrawing then
+        AimFovDrawing.Visible = showFov
+        AimFovDrawing.Position = centro
+        fovCircle.Visible = false
+    else
+        fovCircle.Visible = showFov
+        if showFov then fovCircle.Position = UDim2.fromOffset(centro.X, centro.Y) end
+    end
+
+    -- ESP loop
+    if not Config.ESPEnabled then
+        if wasEnabled then clearAllESP() end
+        wasEnabled = false
+    else
+        wasEnabled = true
+        for _, player in ipairs(Players:GetPlayers()) do
+            updatePlayerESP(player)
+        end
+    end
+
+    -- AIMBOT
+    if Config.AimbotEnabled then
+        local target = getAimbotTarget()
+        if target then lockOn(target) end
+    end
+
+    -- Movimento (aplica APENAS se estiver ligado)
+    local char = LocalPlayer.Character
+    if char then
+        local hum = char:FindFirstChildOfClass("Humanoid")
+        if hum then
+            if Config.SpeedEnabled then
+                hum.WalkSpeed = Config.SpeedValue
+            end
+            if Config.JumpEnabled then
+                hum.UseJumpPower = true
+                hum.JumpPower = Config.JumpValue
+            end
+        end
+    end
 end)
-end
+
+Players.PlayerRemoving:Connect(function(p)
+    clearESPForPlayer(p)
+    espCache[p] = nil
 end)
-_0x333D(string.char(65,78,84,73,45,65,70,75),string.char(65,116,105,118,97,100,111), _0x4BD0)
+
+-- ═══════════════════════════════════════════════════════════════
+-- OPEN/CLOSE
+-- ═══════════════════════════════════════════════════════════════
+local menuOpen = false
+
+local function openMenu()
+    if menuOpen then return end
+    menuOpen = true
+    menuFrame.Visible = true
+    menuFrame.Size = LAYOUTS[CurrentLayout]
+    menuScale.Scale = 0.75
+    menuFrame.Position = UDim2.new(0.5, 0, 0.5, 25)
+    TweenService:Create(menuScale, TweenInfo.new(0.42, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {Scale=1}):Play()
+    TweenService:Create(menuFrame, TweenInfo.new(0.32, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {
+        Position = UDim2.new(0.5, 0, 0.5, 0)
+    }):Play()
 end
+
+local function closeMenu()
+    if not menuOpen then return end
+    menuOpen = false
+    TweenService:Create(menuScale, TweenInfo.new(0.22, Enum.EasingStyle.Quint, Enum.EasingDirection.In), {Scale=0.75}):Play()
+    local t = TweenService:Create(menuFrame, TweenInfo.new(0.22, Enum.EasingStyle.Quint, Enum.EasingDirection.In), {
+        Position = UDim2.new(0.5, 0, 0.5, 25)
+    })
+    t:Play()
+    t.Completed:Connect(function() if not menuOpen then menuFrame.Visible = false end end)
+end
+
+closeBtn.MouseButton1Click:Connect(closeMenu)
+
+local logoDragging, logoDragStart, logoStartPos, logoMoved = false, nil, nil, false
+logo.InputBegan:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+        logoDragging = true; logoMoved = false
+        logoDragStart = input.Position; logoStartPos = logo.Position
+        input.Changed:Connect(function()
+            if input.UserInputState == Enum.UserInputState.End then
+                logoDragging = false
+                if not logoMoved then
+                    if menuOpen then closeMenu() else openMenu() end
+                end
+            end
+        end)
+    end
 end)
-_0xD7FD(_0x90AE, 5,string.char(73,78,70,79))
-local _0x45E1 = Instance.new(string.char(84,101,120,116,76,97,98,101,108))
-_0x45E1.Size = UDim2.new(1, 0, 0, 60)
-_0x45E1.BackgroundColor3 = _0xC4EE
-_0x45E1.BackgroundTransparency = 0.15
-_0x45E1.BorderSizePixel = 0
-_0x45E1.LayoutOrder = 6
-_0x45E1.Text =string.char(65,75,90,32,77,69,78,85,32,91,70,80,83,93,32,68,101,102,117,115,97,108,32,118,49,10,65,105,109,98,111,116,32,115,101,109,112,114,101,32,97,116,105,118,111,10,84,101,97,109,32,99,104,101,99,107,32,118,105,97,32,97,116,114,105,98,117,116,111,10,68,101,118,58,32,65,107,105,114,97,48,48,55,112)_0x45E1.Font = Enum.Font.Code
-_0x45E1.TextSize = 11
-_0x45E1.TextColor3 = _0x328A
-_0x45E1.TextXAlignment = Enum.TextXAlignment.Center
-_0x45E1.TextYAlignment = Enum.TextYAlignment.Center
-_0x45E1.TextWrapped = true
-_0x45E1.Parent = _0x90AE
-Instance.new(string.char(85,73,67,111,114,110,101,114), _0x45E1).CornerRadius = UDim.new(0, 8)
-end
-_0xD23C(string.char(69,83,80))_0x0F0C.InputBegan:Connect(function(input, gp)
-if gp then return end
-if input.KeyCode == Enum.KeyCode.V then
-_0x0E32.ESPEnabled = not _0x0E32.ESPEnabled
-if not _0x0E32.ESPEnabled then _0x9336() end
-end
+UserInputService.InputChanged:Connect(function(input)
+    if not logoDragging then return end
+    if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
+        local delta = input.Position - logoDragStart
+        if math.abs(delta.X) > 3 or math.abs(delta.Y) > 3 then logoMoved = true end
+        logo.Position = UDim2.new(logoStartPos.X.Scale, logoStartPos.X.Offset + delta.X,
+            logoStartPos.Y.Scale, logoStartPos.Y.Offset + delta.Y)
+    end
 end)
-local _0x802B = false
-_0x3C6B.RenderStepped:Connect(function()local _0x010F = _0x0E32.AimbotEnabled and _0x0E32.AimbotShowFOV
-local _0x3AEC = _0x1BE9()
-if _0x32FE then
-_0x32FE.Visible = _0x010F
-_0x32FE.Position = _0x3AEC
-_0x885D.Visible = false
-else
-_0x885D.Visible = _0x010F
-if _0x010F then _0x885D.Position = UDim2.fromOffset(_0x3AEC.X, _0x3AEC.Y) end
-endif not _0x0E32.ESPEnabled then
-if _0x802B then _0x9336() end
-_0x802B = false
-else
-_0x802B = true
-for _, player in ipairs(_0xB272:GetPlayers()) do
-_0x72C1(player)
-end
-endif _0x0E32.AimbotEnabled then
-local _0x8C69 = _0x790D()
-if _0x8C69 then _0x5126(_0x8C69) end
-endlocal _0xAF5A = _0xC29E.Character
-if _0xAF5A then
-local _0x7C8A = _0xAF5A:FindFirstChildOfClass(string.char(72,117,109,97,110,111,105,100))
-if _0x7C8A then
-if _0x0E32.SpeedEnabled then
-_0x7C8A.WalkSpeed = _0x0E32.SpeedValue
-end
-if _0x0E32.JumpEnabled then
-_0x7C8A.UseJumpPower = true
-_0x7C8A.JumpPower = _0x0E32.JumpValue
-end
-end
-end
+
+local menuDragging, menuDragStart, menuStartPos = false, nil, nil
+header.InputBegan:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+        menuDragging = true
+        menuDragStart = input.Position
+        menuStartPos = menuFrame.Position
+        input.Changed:Connect(function()
+            if input.UserInputState == Enum.UserInputState.End then menuDragging = false end
+        end)
+    end
 end)
-_0xB272.PlayerRemoving:Connect(function(p)
-_0x192B(p)
-_0x3ECE[p] = nil
-end)local _0x0711 = false
-local function _0x392B()
-if _0x0711 then return end
-_0x0711 = true
-_0x8194.Visible = true
-_0x8194.Size = _0xFB35[_0x148F]
-_0x6502.Scale = 0.75
-_0x8194.Position = UDim2.new(0.5, 0, 0.5, 25)
-_0xD62C:Create(_0x6502, TweenInfo.new(0.42, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {Scale=1}):Play()
-_0xD62C:Create(_0x8194, TweenInfo.new(0.32, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {
-Position = UDim2.new(0.5, 0, 0.5, 0)
-}):Play()
-end
-local function _0x8940()
-if not _0x0711 then return end
-_0x0711 = false
-_0xD62C:Create(_0x6502, TweenInfo.new(0.22, Enum.EasingStyle.Quint, Enum.EasingDirection.In), {Scale=0.75}):Play()
-local _0x394E = _0xD62C:Create(_0x8194, TweenInfo.new(0.22, Enum.EasingStyle.Quint, Enum.EasingDirection.In), {
-Position = UDim2.new(0.5, 0, 0.5, 25)
-})
-_0x394E:Play()
-_0x394E.Completed:Connect(function() if not _0x0711 then _0x8194.Visible = false end end)
-end
-_0x6E9D.MouseButton1Click:Connect(_0x8940)
-local _0x061C, _0xF5B8, _0x62CD, _0x5D35 = false, nil, nil, false
-_0x3678.InputBegan:Connect(function(input)
-if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
-_0x061C = true; _0x5D35 = false
-_0xF5B8 = input.Position; _0x62CD = _0x3678.Position
-input.Changed:Connect(function()
-if input.UserInputState == Enum.UserInputState.End then
-_0x061C = false
-if not _0x5D35 then
-if _0x0711 then _0x8940() else _0x392B() end
-end
-end
+UserInputService.InputChanged:Connect(function(input)
+    if not menuDragging then return end
+    if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
+        local delta = input.Position - menuDragStart
+        menuFrame.Position = UDim2.new(menuStartPos.X.Scale, menuStartPos.X.Offset + delta.X,
+            menuStartPos.Y.Scale, menuStartPos.Y.Offset + delta.Y)
+    end
 end)
-end
-end)
-_0x0F0C.InputChanged:Connect(function(input)
-if not _0x061C then return end
-if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
-local _0x144C = input.Position - _0xF5B8
-if math.abs(_0x144C.X) > 3 or math.abs(_0x144C.Y) > 3 then _0x5D35 = true end
-_0x3678.Position = UDim2.new(_0x62CD.X.Scale, _0x62CD.X.Offset + _0x144C.X,
-_0x62CD.Y.Scale, _0x62CD.Y.Offset + _0x144C.Y)
-end
-end)
-local _0x71B2, _0x5050, _0xCC5F = false, nil, nil
-_0xAFBF.InputBegan:Connect(function(input)
-if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
-_0x71B2 = true
-_0x5050 = input.Position
-_0xCC5F = _0x8194.Position
-input.Changed:Connect(function()
-if input.UserInputState == Enum.UserInputState.End then _0x71B2 = false end
-end)
-end
-end)
-_0x0F0C.InputChanged:Connect(function(input)
-if not _0x71B2 then return end
-if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
-local _0x144C = input.Position - _0x5050
-_0x8194.Position = UDim2.new(_0xCC5F.X.Scale, _0xCC5F.X.Offset + _0x144C.X,
-_0xCC5F.Y.Scale, _0xCC5F.Y.Offset + _0x144C.Y)
-end
-end)
-print(string.char(91,65,75,90,32,77,69,78,85,32,91,70,80,83,93,32,68,101,102,117,115,97,108,93,32,118,49,32,99,97,114,114,101,103,97,100,111,32,239,191,189,239,191,189))
-print(string.char(91,77,79,86,73,77,69,78,84,79,93,32,83,112,101,101,100,47,74,117,109,112,80,111,119,101,114,32,114,101,115,101,116,97,109,32,97,111,32,100,101,115,108,105,103,97,114))
-print(string.char(91,84,69,65,77,32,67,72,69,67,75,93,32,76,101,110,100,111,32,67,104,97,114,97,99,116,101,114,58,71,101,116,65,116,116,114,105,98,117,116,101,40,39,84,101,97,109,67,111,108,111,114,39,41))
+
+print("[AKZ MENU [FPS] Defusal] v1 carregado 🎯")
+print("[MOVIMENTO] Speed/JumpPower resetam ao desligar")
+print("[TEAM CHECK] Lendo Character:GetAttribute('TeamColor')")
